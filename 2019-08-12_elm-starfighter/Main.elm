@@ -119,7 +119,7 @@ policy =
                     [ text "モジュールバンドラーと戦わない"
                     , br [] []
                     , span [ style "font-size" "2.4rem", style "color" "#999" ]
-                        [ text "Portを積極的に使うならモジュールバンドラーの方が有利のはず" ]
+                        [ text "Portsを積極的に使うならモジュールバンドラーの方が有利のはず" ]
                     ]
                 )
             ]
