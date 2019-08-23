@@ -1,9 +1,9 @@
 {
   "scripts": {
-    "clean": "rm ./assets/elm.js",
+    "clean": "rm assets/elm.js",
     "watch": "elm-live Main.elm --open --start-page=index.html -- --output=assets/elm.js",
-    "compile": "elm make Main.elm --optimize --output=./assets/elm.optimized.js",
-    "minify": "google-closure-compiler --js=./assets/elm.optimized.js --js_output_file=./assets/elm.js && rm ./assets/elm.optimized.js",
+    "compile": "elm make Main.elm --optimize --output=assets/elm.optimized.js",
+    "minify": "google-closure-compiler --js=assets/elm.optimized.js --js_output_file=assets/elm.js && rm assets/elm.optimized.js",
     "build": "npm run clean && npm run compile && npm run minify",
     "start": "npm run clean && npm run watch"
   },
