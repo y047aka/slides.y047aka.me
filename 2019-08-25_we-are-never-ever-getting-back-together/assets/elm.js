@@ -11003,20 +11003,6 @@ var author$project$Main$cover = _List_fromArray(
 				author$project$Formatting$text_('2019.08.25, Tokyo')
 			]))
 	]);
-var elm$html$Html$li = _VirtualDom_node('li');
-var author$project$Formatting$bullet = function (str) {
-	return w0rm$elm_slice_show$SliceShow$Content$item(
-		A2(
-			elm$html$Html$li,
-			_List_Nil,
-			_List_fromArray(
-				[
-					elm$html$Html$text(str)
-				])));
-};
-var elm$html$Html$ul = _VirtualDom_node('ul');
-var author$project$Formatting$bullets = w0rm$elm_slice_show$SliceShow$Content$container(
-	elm$html$Html$ul(_List_Nil));
 var author$project$Formatting$colored = F2(
 	function (color1, color2) {
 		return w0rm$elm_slice_show$SliceShow$Content$container(
@@ -11040,6 +11026,16 @@ var author$project$Formatting$title = function (txt) {
 					elm$html$Html$text(txt)
 				])));
 };
+var elm$html$Html$a = _VirtualDom_node('a');
+var elm$html$Html$li = _VirtualDom_node('li');
+var elm$html$Html$ul = _VirtualDom_node('ul');
+var elm$html$Html$Attributes$href = function (url) {
+	return A2(
+		elm$html$Html$Attributes$stringProperty,
+		'href',
+		_VirtualDom_noJavaScriptUri(url));
+};
+var elm$html$Html$Attributes$target = elm$html$Html$Attributes$stringProperty('target');
 var author$project$Main$elmPackages = _List_fromArray(
 	[
 		A3(
@@ -11049,13 +11045,85 @@ var author$project$Main$elmPackages = _List_fromArray(
 		_List_fromArray(
 			[
 				author$project$Formatting$title('Elm packages'),
-				author$project$Formatting$bullets(
-				_List_fromArray(
-					[
-						author$project$Formatting$bullet('gampleman/elm-visualization'),
-						author$project$Formatting$bullet('jackhp95/elm-mapbox , gampleman/elm-mapbox'),
-						author$project$Formatting$bullet('elm-explorations/webgl , w0rm/elm-physics')
-					]))
+				w0rm$elm_slice_show$SliceShow$Content$item(
+				A2(
+					elm$html$Html$ul,
+					_List_Nil,
+					_List_fromArray(
+						[
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									A2(
+									elm$html$Html$a,
+									_List_fromArray(
+										[
+											elm$html$Html$Attributes$href('https://package.elm-lang.org/packages/gampleman/elm-visualization/latest/'),
+											elm$html$Html$Attributes$target('_blank')
+										]),
+									_List_fromArray(
+										[
+											elm$html$Html$text('gampleman/elm-visualization')
+										])),
+									elm$html$Html$text('（データ可視化）')
+								])),
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									A2(
+									elm$html$Html$a,
+									_List_fromArray(
+										[
+											elm$html$Html$Attributes$href('https://package.elm-lang.org/packages/jackhp95/elm-mapbox/latest/'),
+											elm$html$Html$Attributes$target('_blank')
+										]),
+									_List_fromArray(
+										[
+											elm$html$Html$text('jackhp95/elm-mapbox')
+										])),
+									elm$html$Html$text('（地図）')
+								])),
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									A2(
+									elm$html$Html$a,
+									_List_fromArray(
+										[
+											elm$html$Html$Attributes$href('https://package.elm-lang.org/packages/gampleman/elm-mapbox/latest/'),
+											elm$html$Html$Attributes$target('_blank')
+										]),
+									_List_fromArray(
+										[
+											elm$html$Html$text('gampleman/elm-mapbox')
+										])),
+									elm$html$Html$text('（地図）')
+								])),
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									A2(
+									elm$html$Html$a,
+									_List_fromArray(
+										[
+											elm$html$Html$Attributes$href('https://package.elm-lang.org/packages/elm-explorations/webgl/latest/'),
+											elm$html$Html$Attributes$target('_blank')
+										]),
+									_List_fromArray(
+										[
+											elm$html$Html$text('elm-explorations/webgl')
+										])),
+									elm$html$Html$text('（WebGL）')
+								]))
+						])))
 			]))
 	]);
 var author$project$Main$fin = _List_fromArray(
@@ -11070,6 +11138,18 @@ var author$project$Main$fin = _List_fromArray(
 				author$project$Formatting$text_('会場でステッカーを配布しています')
 			]))
 	]);
+var author$project$Formatting$bullet = function (str) {
+	return w0rm$elm_slice_show$SliceShow$Content$item(
+		A2(
+			elm$html$Html$li,
+			_List_Nil,
+			_List_fromArray(
+				[
+					elm$html$Html$text(str)
+				])));
+};
+var author$project$Formatting$bullets = w0rm$elm_slice_show$SliceShow$Content$container(
+	elm$html$Html$ul(_List_Nil));
 var author$project$Main$gampleman_mapbox = _List_fromArray(
 	[
 		A3(
@@ -11148,13 +11228,85 @@ var author$project$Main$jsLibraries = _List_fromArray(
 		_List_fromArray(
 			[
 				author$project$Formatting$title('JavaScript のライブラリ'),
-				author$project$Formatting$bullets(
-				_List_fromArray(
-					[
-						author$project$Formatting$bullet('データ可視化 → D3.js'),
-						author$project$Formatting$bullet('地図 → Leaflet.js, Mapbox GL JS'),
-						author$project$Formatting$bullet('WebGL / 3DCG → Three.js')
-					]))
+				w0rm$elm_slice_show$SliceShow$Content$item(
+				A2(
+					elm$html$Html$ul,
+					_List_Nil,
+					_List_fromArray(
+						[
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									A2(
+									elm$html$Html$a,
+									_List_fromArray(
+										[
+											elm$html$Html$Attributes$href('https://d3js.org'),
+											elm$html$Html$Attributes$target('_blank')
+										]),
+									_List_fromArray(
+										[
+											elm$html$Html$text('D3.js')
+										])),
+									elm$html$Html$text('（データ可視化）')
+								])),
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									A2(
+									elm$html$Html$a,
+									_List_fromArray(
+										[
+											elm$html$Html$Attributes$href('https://leafletjs.com'),
+											elm$html$Html$Attributes$target('_blank')
+										]),
+									_List_fromArray(
+										[
+											elm$html$Html$text('Leaflet.js')
+										])),
+									elm$html$Html$text('（地図）')
+								])),
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									A2(
+									elm$html$Html$a,
+									_List_fromArray(
+										[
+											elm$html$Html$Attributes$href('https://docs.mapbox.com/mapbox-gl-js/examples/'),
+											elm$html$Html$Attributes$target('_blank')
+										]),
+									_List_fromArray(
+										[
+											elm$html$Html$text('Mapbox GL JS')
+										])),
+									elm$html$Html$text('（地図）')
+								])),
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									A2(
+									elm$html$Html$a,
+									_List_fromArray(
+										[
+											elm$html$Html$Attributes$href('https://threejs.org'),
+											elm$html$Html$Attributes$target('_blank')
+										]),
+									_List_fromArray(
+										[
+											elm$html$Html$text('Three.js')
+										])),
+									elm$html$Html$text('（3DCG, WebGL）')
+								]))
+						])))
 			]))
 	]);
 var elm_explorations$linear_algebra$Math$Matrix4$makeLookAt = _MJS_m4x4makeLookAt;
@@ -11806,14 +11958,6 @@ var author$project$Main$ports = _List_fromArray(
 				author$project$Formatting$code('const app = Elm.Main.init();\n\napp.ports.cache.subscribe((data) => {\n  localStorage.setItem(\'cache\', JSON.stringify(data));\n});\n')
 			]))
 	]);
-var elm$html$Html$a = _VirtualDom_node('a');
-var elm$html$Html$Attributes$href = function (url) {
-	return A2(
-		elm$html$Html$Attributes$stringProperty,
-		'href',
-		_VirtualDom_noJavaScriptUri(url));
-};
-var elm$html$Html$Attributes$target = elm$html$Html$Attributes$stringProperty('target');
 var author$project$Formatting$bulletLink = F2(
 	function (str, url) {
 		return w0rm$elm_slice_show$SliceShow$Content$item(

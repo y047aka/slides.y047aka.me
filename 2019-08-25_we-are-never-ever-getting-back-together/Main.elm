@@ -2,8 +2,8 @@ module Main exposing (main)
 
 import Custom exposing (Content, Msg)
 import Formatting exposing (background, bullet, bulletLink, bullets, code, color, colored, group, noPointerEvents, padded, position, spacer, text_, title)
-import Html exposing (br, h1, img, span, text)
-import Html.Attributes exposing (src, style)
+import Html exposing (a, br, h1, img, li, span, text, ul)
+import Html.Attributes exposing (href, src, style, target)
 import SliceShow exposing (Message, Model, init, setSubscriptions, setUpdate, setView, show)
 import SliceShow.Content exposing (item)
 import SliceShow.Slide exposing (setDimensions, slide)
@@ -94,11 +94,30 @@ jsLibraries =
     [ colored "#F6F6F6"
         "hsl(40, 60%, 45%)"
         [ title "JavaScript のライブラリ"
-        , bullets
-            [ bullet "データ可視化 → D3.js"
-            , bullet "地図 → Leaflet.js, Mapbox GL JS"
-            , bullet "WebGL / 3DCG → Three.js"
-            ]
+        , item
+            (ul []
+                [ li []
+                    [ a [ href "https://d3js.org", target "_blank" ]
+                        [ text "D3.js" ]
+                    , text "（データ可視化）"
+                    ]
+                , li []
+                    [ a [ href "https://leafletjs.com", target "_blank" ]
+                        [ text "Leaflet.js" ]
+                    , text "（地図）"
+                    ]
+                , li []
+                    [ a [ href "https://docs.mapbox.com/mapbox-gl-js/examples/", target "_blank" ]
+                        [ text "Mapbox GL JS" ]
+                    , text "（地図）"
+                    ]
+                , li []
+                    [ a [ href "https://threejs.org", target "_blank" ]
+                        [ text "Three.js" ]
+                    , text "（3DCG, WebGL）"
+                    ]
+                ]
+            )
         ]
     ]
 
@@ -164,11 +183,30 @@ elmPackages =
     [ colored "#F6F6F6"
         "hsl(40, 60%, 45%)"
         [ title "Elm packages"
-        , bullets
-            [ bullet "gampleman/elm-visualization"
-            , bullet "jackhp95/elm-mapbox , gampleman/elm-mapbox"
-            , bullet "elm-explorations/webgl , w0rm/elm-physics"
-            ]
+        , item
+            (ul []
+                [ li []
+                    [ a [ href "https://package.elm-lang.org/packages/gampleman/elm-visualization/latest/", target "_blank" ]
+                        [ text "gampleman/elm-visualization" ]
+                    , text "（データ可視化）"
+                    ]
+                , li []
+                    [ a [ href "https://package.elm-lang.org/packages/jackhp95/elm-mapbox/latest/", target "_blank" ]
+                        [ text "jackhp95/elm-mapbox" ]
+                    , text "（地図）"
+                    ]
+                , li []
+                    [ a [ href "https://package.elm-lang.org/packages/gampleman/elm-mapbox/latest/", target "_blank" ]
+                        [ text "gampleman/elm-mapbox" ]
+                    , text "（地図）"
+                    ]
+                , li []
+                    [ a [ href "https://package.elm-lang.org/packages/elm-explorations/webgl/latest/", target "_blank" ]
+                        [ text "elm-explorations/webgl" ]
+                    , text "（WebGL）"
+                    ]
+                ]
+            )
         ]
     ]
 
