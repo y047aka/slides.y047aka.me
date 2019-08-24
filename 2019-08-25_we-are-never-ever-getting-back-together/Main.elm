@@ -1,7 +1,7 @@
 module Main exposing (main)
 
 import Custom exposing (Content, Msg)
-import Formatting exposing (background, bullet, bulletLink, bullets, colored, group, noPointerEvents, padded, position, spacer, text_, title)
+import Formatting exposing (background, bullet, bulletLink, bullets, color, colored, group, noPointerEvents, padded, position, spacer, text_, title)
 import Html exposing (br, h1, img, span, text)
 import Html.Attributes exposing (src, style)
 import SliceShow exposing (Message, Model, init, setSubscriptions, setUpdate, setView, show)
@@ -75,7 +75,8 @@ cover =
 
 selfIntroduce : List Content
 selfIntroduce =
-    [ padded
+    [ colored "#F6F6F6"
+        "hsl(40, 60%, 45%)"
         [ title "自己紹介"
         , bullets
             [ bullet "2017年10月に建築業界から転職しました"
@@ -89,7 +90,8 @@ selfIntroduce =
 
 jsLibraries : List Content
 jsLibraries =
-    [ padded
+    [ colored "#F6F6F6"
+        "hsl(40, 60%, 45%)"
         [ title "JavaScript のライブラリ"
         , bullets
             [ bullet "データ可視化 → D3.js"
@@ -102,7 +104,8 @@ jsLibraries =
 
 request : List Content
 request =
-    [ padded
+    [ colored "#F6F6F6"
+        "hsl(40, 60%, 45%)"
         [ spacer 80
         , text_ "Ports を使うと"
         , spacer 0
@@ -120,7 +123,7 @@ weAreNeverEverGettingBackTogether =
     [ background "assets/images/we-are-never-ever-getting-back-together_dark.jpg"
         [ spacer 100
         , item
-            (h1 [ style "font-size" "9.5rem" ]
+            (h1 [ style "font-size" "9rem" ]
                 [ text "We Are Never Ever"
                 , br [] []
                 , text "Getting Back Together"
@@ -135,7 +138,8 @@ weAreNeverEverGettingBackTogether =
 
 elmPackages : List Content
 elmPackages =
-    [ padded
+    [ colored "#F6F6F6"
+        "hsl(40, 60%, 45%)"
         [ title "Elm packages"
         , bullets
             [ bullet "gampleman/elm-visualization"
@@ -148,7 +152,8 @@ elmPackages =
 
 visualization : List Content
 visualization =
-    [ padded
+    [ colored "#F6F6F6"
+        "hsl(40, 60%, 45%)"
         [ title "gampleman/elm-visualization"
         , bullets
             [ bullet "SVGやCanvasのパッケージと組み合わせて使用する"
@@ -160,7 +165,8 @@ visualization =
 
 jackhp95_mapbox : List Content
 jackhp95_mapbox =
-    [ padded
+    [ colored "#F6F6F6"
+        "hsl(40, 60%, 45%)"
         [ title "jackhp95/elm-mapbox"
         , bullets
             [ bullet "Ports を使わずに、地図タイルを取得・表示する"
@@ -172,7 +178,8 @@ jackhp95_mapbox =
 
 gampleman_mapbox : List Content
 gampleman_mapbox =
-    [ padded
+    [ colored "#F6F6F6"
+        "hsl(40, 60%, 45%)"
         [ title "gampleman/elm-mapbox"
         , bullets
             [ bullet "Ports を使う（npmで配布されている）"
@@ -185,7 +192,8 @@ gampleman_mapbox =
 
 webGL : List Content
 webGL =
-    [ padded
+    [ colored "#F6F6F6"
+        "hsl(40, 60%, 45%)"
         [ title "elm-explorations/webgl"
         , bullets
             [ bullet "Three.js とは異なり、WebGL を直接操作する"

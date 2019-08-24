@@ -11017,12 +11017,19 @@ var author$project$Formatting$bullet = function (str) {
 var elm$html$Html$ul = _VirtualDom_node('ul');
 var author$project$Formatting$bullets = w0rm$elm_slice_show$SliceShow$Content$container(
 	elm$html$Html$ul(_List_Nil));
-var author$project$Formatting$padded = w0rm$elm_slice_show$SliceShow$Content$container(
-	elm$html$Html$div(
-		_List_fromArray(
-			[
-				A2(elm$html$Html$Attributes$style, 'padding', author$project$Formatting$slidePadding)
-			])));
+var author$project$Formatting$colored = F2(
+	function (color1, color2) {
+		return w0rm$elm_slice_show$SliceShow$Content$container(
+			elm$html$Html$div(
+				_List_fromArray(
+					[
+						A2(elm$html$Html$Attributes$style, 'height', '100%'),
+						A2(elm$html$Html$Attributes$style, 'box-sizing', 'border-box'),
+						A2(elm$html$Html$Attributes$style, 'padding', author$project$Formatting$slidePadding),
+						A2(elm$html$Html$Attributes$style, 'background', color1),
+						A2(elm$html$Html$Attributes$style, 'color', color2)
+					])));
+	});
 var author$project$Formatting$title = function (txt) {
 	return w0rm$elm_slice_show$SliceShow$Content$item(
 		A2(
@@ -11035,7 +11042,10 @@ var author$project$Formatting$title = function (txt) {
 };
 var author$project$Main$elmPackages = _List_fromArray(
 	[
-		author$project$Formatting$padded(
+		A3(
+		author$project$Formatting$colored,
+		'#F6F6F6',
+		'hsl(40, 60%, 45%)',
 		_List_fromArray(
 			[
 				author$project$Formatting$title('Elm packages'),
@@ -11062,7 +11072,10 @@ var author$project$Main$fin = _List_fromArray(
 	]);
 var author$project$Main$gampleman_mapbox = _List_fromArray(
 	[
-		author$project$Formatting$padded(
+		A3(
+		author$project$Formatting$colored,
+		'#F6F6F6',
+		'hsl(40, 60%, 45%)',
 		_List_fromArray(
 			[
 				author$project$Formatting$title('gampleman/elm-mapbox'),
@@ -11077,7 +11090,10 @@ var author$project$Main$gampleman_mapbox = _List_fromArray(
 	]);
 var author$project$Main$jackhp95_mapbox = _List_fromArray(
 	[
-		author$project$Formatting$padded(
+		A3(
+		author$project$Formatting$colored,
+		'#F6F6F6',
+		'hsl(40, 60%, 45%)',
 		_List_fromArray(
 			[
 				author$project$Formatting$title('jackhp95/elm-mapbox'),
@@ -11091,7 +11107,10 @@ var author$project$Main$jackhp95_mapbox = _List_fromArray(
 	]);
 var author$project$Main$jsLibraries = _List_fromArray(
 	[
-		author$project$Formatting$padded(
+		A3(
+		author$project$Formatting$colored,
+		'#F6F6F6',
+		'hsl(40, 60%, 45%)',
 		_List_fromArray(
 			[
 				author$project$Formatting$title('JavaScript のライブラリ'),
@@ -11584,19 +11603,6 @@ var author$project$Custom$lack = function (options) {
 		author$project$Custom$LackModel(
 			author$project$Custom$Lack$initial(options)));
 };
-var author$project$Formatting$colored = F2(
-	function (color1, color2) {
-		return w0rm$elm_slice_show$SliceShow$Content$container(
-			elm$html$Html$div(
-				_List_fromArray(
-					[
-						A2(elm$html$Html$Attributes$style, 'height', '100%'),
-						A2(elm$html$Html$Attributes$style, 'box-sizing', 'border-box'),
-						A2(elm$html$Html$Attributes$style, 'padding', author$project$Formatting$slidePadding),
-						A2(elm$html$Html$Attributes$style, 'background', color1),
-						A2(elm$html$Html$Attributes$style, 'color', color2)
-					])));
-	});
 var author$project$Formatting$group = F5(
 	function (left, top, width, height, content) {
 		return A2(
@@ -11695,7 +11701,10 @@ var author$project$Main$planning = _List_fromArray(
 	]);
 var author$project$Main$request = _List_fromArray(
 	[
-		author$project$Formatting$padded(
+		A3(
+		author$project$Formatting$colored,
+		'#F6F6F6',
+		'hsl(40, 60%, 45%)',
 		_List_fromArray(
 			[
 				author$project$Formatting$spacer(80),
@@ -11740,7 +11749,10 @@ var author$project$Formatting$bulletLink = F2(
 	});
 var author$project$Main$selfIntroduce = _List_fromArray(
 	[
-		author$project$Formatting$padded(
+		A3(
+		author$project$Formatting$colored,
+		'#F6F6F6',
+		'hsl(40, 60%, 45%)',
 		_List_fromArray(
 			[
 				author$project$Formatting$title('自己紹介'),
@@ -11756,7 +11768,10 @@ var author$project$Main$selfIntroduce = _List_fromArray(
 	]);
 var author$project$Main$visualization = _List_fromArray(
 	[
-		author$project$Formatting$padded(
+		A3(
+		author$project$Formatting$colored,
+		'#F6F6F6',
+		'hsl(40, 60%, 45%)',
 		_List_fromArray(
 			[
 				author$project$Formatting$title('gampleman/elm-visualization'),
@@ -11770,7 +11785,10 @@ var author$project$Main$visualization = _List_fromArray(
 	]);
 var author$project$Main$webGL = _List_fromArray(
 	[
-		author$project$Formatting$padded(
+		A3(
+		author$project$Formatting$colored,
+		'#F6F6F6',
+		'hsl(40, 60%, 45%)',
 		_List_fromArray(
 			[
 				author$project$Formatting$title('elm-explorations/webgl'),
