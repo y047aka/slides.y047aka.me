@@ -11088,6 +11088,40 @@ var author$project$Main$gampleman_mapbox = _List_fromArray(
 					]))
 			]))
 	]);
+var author$project$Main$hope = _List_fromArray(
+	[
+		A3(
+		author$project$Formatting$colored,
+		'#F6F6F6',
+		'hsl(40, 60%, 45%)',
+		_List_fromArray(
+			[
+				author$project$Formatting$spacer(200),
+				w0rm$elm_slice_show$SliceShow$Content$item(
+				A2(
+					elm$html$Html$span,
+					_List_fromArray(
+						[
+							A2(elm$html$Html$Attributes$style, 'font-size', '5rem')
+						]),
+					_List_fromArray(
+						[
+							elm$html$Html$text('でも...')
+						]))),
+				author$project$Formatting$spacer(0),
+				w0rm$elm_slice_show$SliceShow$Content$item(
+				A2(
+					elm$html$Html$span,
+					_List_fromArray(
+						[
+							A2(elm$html$Html$Attributes$style, 'font-size', '5rem')
+						]),
+					_List_fromArray(
+						[
+							elm$html$Html$text('Elm だけで成立させたい！')
+						])))
+			]))
+	]);
 var author$project$Main$jackhp95_mapbox = _List_fromArray(
 	[
 		A3(
@@ -11699,7 +11733,32 @@ var author$project$Main$planning = _List_fromArray(
 						])))
 			]))
 	]);
-var author$project$Main$request = _List_fromArray(
+var elm$html$Html$code = _VirtualDom_node('code');
+var elm$html$Html$pre = _VirtualDom_node('pre');
+var author$project$Formatting$code = function (str) {
+	return w0rm$elm_slice_show$SliceShow$Content$item(
+		A2(
+			elm$html$Html$pre,
+			_List_fromArray(
+				[
+					A2(elm$html$Html$Attributes$style, 'margin', '0')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					elm$html$Html$code,
+					_List_fromArray(
+						[
+							A2(elm$html$Html$Attributes$style, 'font', '3rem monospace'),
+							A2(elm$html$Html$Attributes$style, 'margin', '0')
+						]),
+					_List_fromArray(
+						[
+							elm$html$Html$text(str)
+						]))
+				])));
+};
+var author$project$Main$ports = _List_fromArray(
 	[
 		A3(
 		author$project$Formatting$colored,
@@ -11707,14 +11766,44 @@ var author$project$Main$request = _List_fromArray(
 		'hsl(40, 60%, 45%)',
 		_List_fromArray(
 			[
+				author$project$Formatting$spacer(40),
+				w0rm$elm_slice_show$SliceShow$Content$item(
+				A2(
+					elm$html$Html$span,
+					_List_fromArray(
+						[
+							A2(elm$html$Html$Attributes$style, 'font-size', '5rem')
+						]),
+					_List_fromArray(
+						[
+							elm$html$Html$text('Ports を使うと')
+						]))),
+				author$project$Formatting$spacer(0),
+				w0rm$elm_slice_show$SliceShow$Content$item(
+				A2(
+					elm$html$Html$span,
+					_List_fromArray(
+						[
+							A2(elm$html$Html$Attributes$style, 'font-size', '5rem')
+						]),
+					_List_fromArray(
+						[
+							elm$html$Html$text('JavaScript の資産を活用できる')
+						]))),
 				author$project$Formatting$spacer(80),
-				author$project$Formatting$text_('Ports を使うと'),
-				author$project$Formatting$spacer(0),
-				author$project$Formatting$text_('JavaScript の資産を活用できる'),
-				author$project$Formatting$spacer(130),
-				author$project$Formatting$text_('でも...'),
-				author$project$Formatting$spacer(0),
-				author$project$Formatting$text_('Elm だけで成立させたい！')
+				w0rm$elm_slice_show$SliceShow$Content$item(
+				A2(
+					elm$html$Html$span,
+					_List_fromArray(
+						[
+							A2(elm$html$Html$Attributes$style, 'font-size', '3rem')
+						]),
+					_List_fromArray(
+						[
+							elm$html$Html$text('例：ElmからJavaScriptにデータを送信する場合')
+						]))),
+				author$project$Formatting$spacer(20),
+				author$project$Formatting$code('const app = Elm.Main.init();\n\napp.ports.cache.subscribe((data) => {\n  localStorage.setItem(\'cache\', JSON.stringify(data));\n});\n')
 			]))
 	]);
 var elm$html$Html$a = _VirtualDom_node('a');
@@ -11802,7 +11891,7 @@ var author$project$Main$webGL = _List_fromArray(
 			]))
 	]);
 var author$project$Main$slides = _List_fromArray(
-	[author$project$Main$cover, author$project$Main$selfIntroduce, author$project$Main$jsLibraries, author$project$Main$request, author$project$Main$elmPackages, author$project$Main$visualization, author$project$Main$jackhp95_mapbox, author$project$Main$gampleman_mapbox, author$project$Main$webGL, author$project$Main$planning, author$project$Main$fin]);
+	[author$project$Main$cover, author$project$Main$selfIntroduce, author$project$Main$jsLibraries, author$project$Main$ports, author$project$Main$hope, author$project$Main$elmPackages, author$project$Main$visualization, author$project$Main$jackhp95_mapbox, author$project$Main$gampleman_mapbox, author$project$Main$webGL, author$project$Main$planning, author$project$Main$fin]);
 var elm$core$Platform$Sub$none = elm$core$Platform$Sub$batch(_List_Nil);
 var w0rm$elm_slice_show$SliceShow$Model$init = F2(
 	function (slides, key) {

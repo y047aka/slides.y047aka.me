@@ -1,7 +1,7 @@
 module Main exposing (main)
 
 import Custom exposing (Content, Msg)
-import Formatting exposing (background, bullet, bulletLink, bullets, color, colored, group, noPointerEvents, padded, position, spacer, text_, title)
+import Formatting exposing (background, bullet, bulletLink, bullets, code, color, colored, group, noPointerEvents, padded, position, spacer, text_, title)
 import Html exposing (br, h1, img, span, text)
 import Html.Attributes exposing (src, style)
 import SliceShow exposing (Message, Model, init, setSubscriptions, setUpdate, setView, show)
@@ -24,7 +24,8 @@ slides =
     [ cover
     , selfIntroduce
     , jsLibraries
-    , request
+    , ports
+    , hope
 
     -- , weAreNeverEverGettingBackTogether
     , elmPackages
@@ -102,18 +103,40 @@ jsLibraries =
     ]
 
 
-request : List Content
-request =
+ports : List Content
+ports =
     [ colored "#F6F6F6"
         "hsl(40, 60%, 45%)"
-        [ spacer 80
-        , text_ "Ports を使うと"
+        [ spacer 40
+        , item
+            (span [ style "font-size" "5rem" ] [ text "Ports を使うと" ])
         , spacer 0
-        , text_ "JavaScript の資産を活用できる"
-        , spacer 130
-        , text_ "でも..."
+        , item
+            (span [ style "font-size" "5rem" ] [ text "JavaScript の資産を活用できる" ])
+        , spacer 80
+        , item
+            (span [ style "font-size" "3rem" ] [ text "例：ElmからJavaScriptにデータを送信する場合" ])
+        , spacer 20
+        , code """const app = Elm.Main.init();
+
+app.ports.cache.subscribe((data) => {
+  localStorage.setItem('cache', JSON.stringify(data));
+});
+"""
+        ]
+    ]
+
+
+hope : List Content
+hope =
+    [ colored "#F6F6F6"
+        "hsl(40, 60%, 45%)"
+        [ spacer 200
+        , item
+            (span [ style "font-size" "5rem" ] [ text "でも..." ])
         , spacer 0
-        , text_ "Elm だけで成立させたい！"
+        , item
+            (span [ style "font-size" "5rem" ] [ text "Elm だけで成立させたい！" ])
         ]
     ]
 
