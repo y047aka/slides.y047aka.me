@@ -1,7 +1,7 @@
 module Main exposing (main)
 
 import Custom exposing (Content, Msg)
-import Formatting exposing (background, bullet, bullets, colored, group, noPointerEvents, padded, position, spacer, text_, title)
+import Formatting exposing (background, bullet, bulletLink, bullets, colored, group, noPointerEvents, padded, position, spacer, text_, title)
 import Html exposing (br, h1, text)
 import Html.Attributes exposing (style)
 import SliceShow exposing (Message, Model, init, setSubscriptions, setUpdate, setView, show)
@@ -63,9 +63,9 @@ selfIntroduce =
         [ title "自己紹介"
         , bullets
             [ bullet "2017年10月に建築業界から転職しました"
-            , bullet "Excelのみの環境でVBAを使い、ふと気付くと関数型に"
             , bullet "2019年2月から Elm を使っています"
-            , bullet "elm-starfighter, ElmJapanLogoGenerator"
+            , bulletLink "elm-starfighter" "https://github.com/y047aka/elm-starfighter"
+            , bulletLink "ElmJapanLogoGenerator" "https://y047aka.github.io/elm-japan-logo-generator/"
             ]
         ]
     ]
