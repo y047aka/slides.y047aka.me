@@ -191,11 +191,11 @@ planning =
           , text_ "日程："
           , spacer 0
           , text_ "\u{3000}2019年 12月 7日"
-          , spacer 30
+          , spacer 25
           , text_ "会場："
           , spacer 0
           , text_ "\u{3000}未定（募集中）"
-          , spacer 30
+          , spacer 25
           , text_ "ゲスト："
           , spacer 0
           , text_ "\u{3000}Andrey Kuzmin（elm-physics, elm-slice-show）"
