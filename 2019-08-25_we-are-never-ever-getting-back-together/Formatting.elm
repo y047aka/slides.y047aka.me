@@ -22,7 +22,7 @@ background url =
         (Html.div
             [ style "height" "100%"
             , style "box-sizing" "border-box"
-            , style "padding" "50px 100px"
+            , style "padding" slidePadding
             , style "background-image" ("url(" ++ url ++ ")")
             , style "background-size" "cover"
             , style "color" "#FFF"

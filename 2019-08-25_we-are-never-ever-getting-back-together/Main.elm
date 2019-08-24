@@ -32,6 +32,7 @@ slides =
     , jackhp95_mapbox
     , gampleman_mapbox
     , webGL
+    , fin
     ]
 
 
@@ -102,7 +103,8 @@ request =
 weAreNeverEverGettingBackTogether : List Content
 weAreNeverEverGettingBackTogether =
     [ background "assets/images/we-are-never-ever-getting-back-together_dark.jpg"
-        [ item
+        [ spacer 100
+        , item
             (h1 [ style "font-size" "9.5rem" ]
                 [ text "We Are Never Ever"
                 , br [] []
@@ -175,5 +177,15 @@ webGL =
             , bullet "Elmでここだけの [glsl | ... |] という記法がある"
             , bullet "GLSLの知識が少し必要です"
             ]
+        ]
+    ]
+
+
+fin : List Content
+fin =
+    [ background "assets/images/stickers.png"
+        [ title "Fin."
+        , spacer 350
+        , text_ "会場でステッカーを配布しています"
         ]
     ]
