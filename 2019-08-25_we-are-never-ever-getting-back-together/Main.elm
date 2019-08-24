@@ -81,7 +81,13 @@ selfIntroduce =
         , bullets
             [ bullet "2017年10月に建築業界から転職しました"
             , bullet "2019年2月から Elm を使っています"
-            , bulletLink "elm-starfighter" "https://github.com/y047aka/elm-starfighter"
+            , item
+                (li []
+                    [ a [ href "https://github.com/y047aka/elm-starfighter", target "_blank" ]
+                        [ text "elm-starfighter" ]
+                    , text "（webpackなしの開発テンプレート）"
+                    ]
+                )
             , bulletLink "ElmJapanLogoGenerator" "https://y047aka.github.io/elm-japan-logo-generator/"
             ]
         ]

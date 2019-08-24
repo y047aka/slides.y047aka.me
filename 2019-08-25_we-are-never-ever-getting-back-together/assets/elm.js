@@ -11994,7 +11994,25 @@ var author$project$Main$selfIntroduce = _List_fromArray(
 					[
 						author$project$Formatting$bullet('2017年10月に建築業界から転職しました'),
 						author$project$Formatting$bullet('2019年2月から Elm を使っています'),
-						A2(author$project$Formatting$bulletLink, 'elm-starfighter', 'https://github.com/y047aka/elm-starfighter'),
+						w0rm$elm_slice_show$SliceShow$Content$item(
+						A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									A2(
+									elm$html$Html$a,
+									_List_fromArray(
+										[
+											elm$html$Html$Attributes$href('https://github.com/y047aka/elm-starfighter'),
+											elm$html$Html$Attributes$target('_blank')
+										]),
+									_List_fromArray(
+										[
+											elm$html$Html$text('elm-starfighter')
+										])),
+									elm$html$Html$text('（webpackなしの開発テンプレート）')
+								]))),
 						A2(author$project$Formatting$bulletLink, 'ElmJapanLogoGenerator', 'https://y047aka.github.io/elm-japan-logo-generator/')
 					]))
 			]))
