@@ -196,12 +196,13 @@ hope : List Content
 hope =
     [ colored "#F6F6F6"
         "hsl(40, 60%, 45%)"
-        [ spacer 250
-        , item
-            (span [ style "font-size" "5rem" ] [ text "でも..." ])
-        , spacer 0
-        , item
-            (span [ style "font-size" "5rem" ] [ text "Elm だけで成立させたい！" ])
+        [ title "なるべく Elm のみで完結させたい！"
+        , bullets
+            [ bullet "パターンマッチやパイプラインが使える"
+            , bullet "宣言的に記述できる"
+            , bullet "テストやデバッグを、より簡単にできる"
+            , bullet "第一言語としての Elm を提示することができる"
+            ]
         ]
     ]
 

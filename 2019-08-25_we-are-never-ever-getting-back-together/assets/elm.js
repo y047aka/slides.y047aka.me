@@ -11176,30 +11176,15 @@ var author$project$Main$hope = _List_fromArray(
 		'hsl(40, 60%, 45%)',
 		_List_fromArray(
 			[
-				author$project$Formatting$spacer(250),
-				w0rm$elm_slice_show$SliceShow$Content$item(
-				A2(
-					elm$html$Html$span,
-					_List_fromArray(
-						[
-							A2(elm$html$Html$Attributes$style, 'font-size', '5rem')
-						]),
-					_List_fromArray(
-						[
-							elm$html$Html$text('でも...')
-						]))),
-				author$project$Formatting$spacer(0),
-				w0rm$elm_slice_show$SliceShow$Content$item(
-				A2(
-					elm$html$Html$span,
-					_List_fromArray(
-						[
-							A2(elm$html$Html$Attributes$style, 'font-size', '5rem')
-						]),
-					_List_fromArray(
-						[
-							elm$html$Html$text('Elm だけで成立させたい！')
-						])))
+				author$project$Formatting$title('なるべく Elm のみで完結させたい！'),
+				author$project$Formatting$bullets(
+				_List_fromArray(
+					[
+						author$project$Formatting$bullet('パターンマッチやパイプラインが使える'),
+						author$project$Formatting$bullet('宣言的に記述できる'),
+						author$project$Formatting$bullet('テストやデバッグを、より簡単にできる'),
+						author$project$Formatting$bullet('第一言語としての Elm を提示することができる')
+					]))
 			]))
 	]);
 var author$project$Main$jackhp95_mapbox = _List_fromArray(
