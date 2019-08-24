@@ -32,6 +32,7 @@ slides =
     , jackhp95_mapbox
     , gampleman_mapbox
     , webGL
+    , planning
     , fin
     ]
 
@@ -177,6 +178,30 @@ webGL =
             , bullet "Elmでここだけの [glsl | ... |] という記法がある"
             , bullet "GLSLの知識が少し必要です"
             ]
+        ]
+    ]
+
+
+planning : List Content
+planning =
+    [ colored ""
+        "#FFF"
+        [ Custom.lack { width = 1280, height = 720 } |> position 0 0
+        , [ title "次のイベントを計画中です"
+          , text_ "日程："
+          , spacer 0
+          , text_ "\u{3000}2019年 12月 7日"
+          , spacer 30
+          , text_ "会場："
+          , spacer 0
+          , text_ "\u{3000}未定（募集中）"
+          , spacer 30
+          , text_ "ゲスト："
+          , spacer 0
+          , text_ "\u{3000}Andrey Kuzmin（elm-physics, elm-slice-show）"
+          ]
+            |> group 100 25 1100 280
+            |> noPointerEvents
         ]
     ]
 
