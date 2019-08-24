@@ -12089,6 +12089,21 @@ var author$project$Main$visualization = _List_fromArray(
 					]))
 			]))
 	]);
+var w0rm$elm_slice_show$SliceShow$State$Hidden = {$: 'Hidden'};
+var w0rm$elm_slice_show$SliceShow$Content$hide = function (content) {
+	switch (content.$) {
+		case 'Container':
+			var render = content.b;
+			var elements = content.c;
+			return A3(w0rm$elm_slice_show$SliceShow$ContentData$Container, w0rm$elm_slice_show$SliceShow$State$Hidden, render, elements);
+		case 'Item':
+			var html = content.b;
+			return A2(w0rm$elm_slice_show$SliceShow$ContentData$Item, w0rm$elm_slice_show$SliceShow$State$Hidden, html);
+		default:
+			var data = content.b;
+			return A2(w0rm$elm_slice_show$SliceShow$ContentData$Custom, w0rm$elm_slice_show$SliceShow$State$Hidden, data);
+	}
+};
 var author$project$Main$weAreNeverEverGettingBackTogether = _List_fromArray(
 	[
 		A2(
@@ -12096,23 +12111,32 @@ var author$project$Main$weAreNeverEverGettingBackTogether = _List_fromArray(
 		'assets/images/we-are-never-ever-getting-back-together_dark.jpg',
 		_List_fromArray(
 			[
-				author$project$Formatting$spacer(100),
-				w0rm$elm_slice_show$SliceShow$Content$item(
-				A2(
-					elm$html$Html$h1,
+				w0rm$elm_slice_show$SliceShow$Content$hide(
+				A5(
+					author$project$Formatting$group,
+					100,
+					80,
+					1100,
+					280,
 					_List_fromArray(
 						[
-							A2(elm$html$Html$Attributes$style, 'font-size', '9rem')
-						]),
-					_List_fromArray(
-						[
-							elm$html$Html$text('We Are Never Ever'),
-							A2(elm$html$Html$br, _List_Nil, _List_Nil),
-							elm$html$Html$text('Getting Back Together')
-						]))),
-				author$project$Formatting$text_('私たちは絶対に絶対に'),
-				author$project$Formatting$spacer(0),
-				author$project$Formatting$text_('Ports を頼ったりしない！')
+							w0rm$elm_slice_show$SliceShow$Content$item(
+							A2(
+								elm$html$Html$h1,
+								_List_fromArray(
+									[
+										A2(elm$html$Html$Attributes$style, 'font-size', '9rem')
+									]),
+								_List_fromArray(
+									[
+										elm$html$Html$text('We Are Never Ever'),
+										A2(elm$html$Html$br, _List_Nil, _List_Nil),
+										elm$html$Html$text('Getting Back Together')
+									]))),
+							author$project$Formatting$text_('私たちは絶対に絶対に'),
+							author$project$Formatting$spacer(0),
+							author$project$Formatting$text_('Ports を頼ったりしない！')
+						])))
 			]))
 	]);
 var author$project$Main$webGL = _List_fromArray(
@@ -12325,7 +12349,6 @@ var w0rm$elm_slice_show$SliceShow$Model$currentSlide = function (m) {
 			},
 			m.currentSlide));
 };
-var w0rm$elm_slice_show$SliceShow$State$Hidden = {$: 'Hidden'};
 var w0rm$elm_slice_show$SliceShow$ContentData$subscriptions = F2(
 	function (customSubscription, elements) {
 		subscriptions:

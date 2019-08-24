@@ -5,7 +5,7 @@ import Formatting exposing (background, bullet, bulletLink, bullets, code, color
 import Html exposing (a, br, h1, img, li, span, text, ul)
 import Html.Attributes exposing (href, src, style, target)
 import SliceShow exposing (Message, Model, init, setSubscriptions, setUpdate, setView, show)
-import SliceShow.Content exposing (item)
+import SliceShow.Content exposing (hide, item)
 import SliceShow.Slide exposing (setDimensions, slide)
 
 
@@ -210,17 +210,19 @@ hope =
 weAreNeverEverGettingBackTogether : List Content
 weAreNeverEverGettingBackTogether =
     [ background "assets/images/we-are-never-ever-getting-back-together_dark.jpg"
-        [ spacer 100
-        , item
-            (h1 [ style "font-size" "9rem" ]
-                [ text "We Are Never Ever"
-                , br [] []
-                , text "Getting Back Together"
-                ]
-            )
-        , text_ "私たちは絶対に絶対に"
-        , spacer 0
-        , text_ "Ports を頼ったりしない！"
+        [ [ item
+                (h1 [ style "font-size" "9rem" ]
+                    [ text "We Are Never Ever"
+                    , br [] []
+                    , text "Getting Back Together"
+                    ]
+                )
+          , text_ "私たちは絶対に絶対に"
+          , spacer 0
+          , text_ "Ports を頼ったりしない！"
+          ]
+            |> group 100 80 1100 280
+            |> hide
         ]
     ]
 
