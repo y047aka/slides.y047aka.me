@@ -21,7 +21,8 @@ main =
 
 
 slides =
-    [ cover
+    [ notice
+    , cover
     , selfIntroduce
     , jsLibraries
     , ports
@@ -34,6 +35,34 @@ slides =
     , webGL
     , planning
     , fin
+    ]
+
+
+notice : List Content
+notice =
+    [ colored "#F6F6F6"
+        "hsl(40, 60%, 45%)"
+        [ title "ご注意ください..."
+        , bullets
+            [ item
+                (li []
+                    [ text "この発表は、Ports の使用を避けるためのハックや、"
+                    , br [] []
+                    , text "新しい手法を紹介するものではありません"
+                    ]
+                )
+            , item
+                (li []
+                    [ text "D3.js, Leaflet.js, Three.js などに相当する、"
+                    , br [] []
+                    , text "Elmのパッケージについて、簡潔に紹介します"
+                    , br [] []
+                    , span [ style "display" "block", style "padding-top" "0.5rem", style "font-size" "3.3rem" ]
+                        [ text "※ elm-visualizaton, elm-mapbox, elm-explorations/webgl など" ]
+                    ]
+                )
+            ]
+        ]
     ]
 
 

@@ -11309,6 +11309,54 @@ var author$project$Main$jsLibraries = _List_fromArray(
 						])))
 			]))
 	]);
+var author$project$Main$notice = _List_fromArray(
+	[
+		A3(
+		author$project$Formatting$colored,
+		'#F6F6F6',
+		'hsl(40, 60%, 45%)',
+		_List_fromArray(
+			[
+				author$project$Formatting$title('ご注意ください...'),
+				author$project$Formatting$bullets(
+				_List_fromArray(
+					[
+						w0rm$elm_slice_show$SliceShow$Content$item(
+						A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									elm$html$Html$text('この発表は、Ports の使用を避けるためのハックや、'),
+									A2(elm$html$Html$br, _List_Nil, _List_Nil),
+									elm$html$Html$text('新しい手法を紹介するものではありません')
+								]))),
+						w0rm$elm_slice_show$SliceShow$Content$item(
+						A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									elm$html$Html$text('D3.js, Leaflet.js, Three.js などに相当する、'),
+									A2(elm$html$Html$br, _List_Nil, _List_Nil),
+									elm$html$Html$text('Elmのパッケージについて、簡潔に紹介します'),
+									A2(elm$html$Html$br, _List_Nil, _List_Nil),
+									A2(
+									elm$html$Html$span,
+									_List_fromArray(
+										[
+											A2(elm$html$Html$Attributes$style, 'display', 'block'),
+											A2(elm$html$Html$Attributes$style, 'padding-top', '0.5rem'),
+											A2(elm$html$Html$Attributes$style, 'font-size', '3.3rem')
+										]),
+									_List_fromArray(
+										[
+											elm$html$Html$text('※ elm-visualizaton, elm-mapbox, elm-explorations/webgl など')
+										]))
+								])))
+					]))
+			]))
+	]);
 var elm_explorations$linear_algebra$Math$Matrix4$makeLookAt = _MJS_m4x4makeLookAt;
 var author$project$Common$Camera$camera = function (_n0) {
 	var from = _n0.from;
@@ -12079,7 +12127,7 @@ var author$project$Main$webGL = _List_fromArray(
 			]))
 	]);
 var author$project$Main$slides = _List_fromArray(
-	[author$project$Main$cover, author$project$Main$selfIntroduce, author$project$Main$jsLibraries, author$project$Main$ports, author$project$Main$hope, author$project$Main$weAreNeverEverGettingBackTogether, author$project$Main$elmPackages, author$project$Main$visualization, author$project$Main$jackhp95_mapbox, author$project$Main$gampleman_mapbox, author$project$Main$webGL, author$project$Main$planning, author$project$Main$fin]);
+	[author$project$Main$notice, author$project$Main$cover, author$project$Main$selfIntroduce, author$project$Main$jsLibraries, author$project$Main$ports, author$project$Main$hope, author$project$Main$weAreNeverEverGettingBackTogether, author$project$Main$elmPackages, author$project$Main$visualization, author$project$Main$jackhp95_mapbox, author$project$Main$gampleman_mapbox, author$project$Main$webGL, author$project$Main$planning, author$project$Main$fin]);
 var elm$core$Platform$Sub$none = elm$core$Platform$Sub$batch(_List_Nil);
 var w0rm$elm_slice_show$SliceShow$Model$init = F2(
 	function (slides, key) {
