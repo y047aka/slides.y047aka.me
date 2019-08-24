@@ -2,8 +2,8 @@ module Main exposing (main)
 
 import Custom exposing (Content, Msg)
 import Formatting exposing (background, bullet, bulletLink, bullets, colored, group, noPointerEvents, padded, position, spacer, text_, title)
-import Html exposing (br, h1, text)
-import Html.Attributes exposing (style)
+import Html exposing (br, h1, img, span, text)
+import Html.Attributes exposing (src, style)
 import SliceShow exposing (Message, Model, init, setSubscriptions, setUpdate, setView, show)
 import SliceShow.Content exposing (item)
 import SliceShow.Slide exposing (setDimensions, slide)
@@ -39,22 +39,36 @@ slides =
 
 cover : List Content
 cover =
-    [ colored ""
-        "#FFF"
-        [ Custom.lack { width = 1280, height = 720 } |> position 0 0
-        , [ item
-                (h1 [ style "font-size" "4.5rem" ]
-                    [ text "私たちは絶対に絶対に"
-                    , br [] []
-                    , text "Ports を頼ったりしない"
-                    ]
-                )
-          , text_ "Elm Meetup in Summer"
-          , spacer 100
-          , text_ "Yoshitaka Totsuka"
-          ]
-            |> group 100 50 700 280
-            |> noPointerEvents
+    [ background "assets/images/cover.jpg"
+        [ item
+            (h1 [ style "font-size" "7rem" ]
+                [ text "私たちは絶対に絶対に"
+                , br [] []
+                , text "Ports を頼ったりしない"
+                ]
+            )
+        , spacer 80
+        , item
+            (img
+                [ src "assets/images/y047aka.png"
+                , style "width" "90px"
+                , style "border-radius" "50%"
+                ]
+                []
+            )
+        , item
+            (span
+                [ style "position" "relative"
+                , style "top" "-2.5rem"
+                , style "padding-left" "0.5em"
+                , style "font-size" "5rem"
+                ]
+                [ text "y047aka" ]
+            )
+        , spacer 20
+        , text_ "Elm Meetup in Summer"
+        , spacer 10
+        , text_ "2019.08.25, Tokyo"
         ]
     ]
 
