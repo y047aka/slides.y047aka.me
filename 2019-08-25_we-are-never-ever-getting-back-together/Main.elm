@@ -26,8 +26,7 @@ slides =
     , jsLibraries
     , ports
     , hope
-
-    -- , weAreNeverEverGettingBackTogether
+    , weAreNeverEverGettingBackTogether
     , elmPackages
     , visualization
     , jackhp95_mapbox

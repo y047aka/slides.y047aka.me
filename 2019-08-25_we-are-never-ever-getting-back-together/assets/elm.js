@@ -12016,6 +12016,32 @@ var author$project$Main$visualization = _List_fromArray(
 					]))
 			]))
 	]);
+var author$project$Main$weAreNeverEverGettingBackTogether = _List_fromArray(
+	[
+		A2(
+		author$project$Formatting$background,
+		'assets/images/we-are-never-ever-getting-back-together_dark.jpg',
+		_List_fromArray(
+			[
+				author$project$Formatting$spacer(100),
+				w0rm$elm_slice_show$SliceShow$Content$item(
+				A2(
+					elm$html$Html$h1,
+					_List_fromArray(
+						[
+							A2(elm$html$Html$Attributes$style, 'font-size', '9rem')
+						]),
+					_List_fromArray(
+						[
+							elm$html$Html$text('We Are Never Ever'),
+							A2(elm$html$Html$br, _List_Nil, _List_Nil),
+							elm$html$Html$text('Getting Back Together')
+						]))),
+				author$project$Formatting$text_('私たちは絶対に絶対に'),
+				author$project$Formatting$spacer(0),
+				author$project$Formatting$text_('Ports を頼ったりしない！')
+			]))
+	]);
 var author$project$Main$webGL = _List_fromArray(
 	[
 		A3(
@@ -12035,7 +12061,7 @@ var author$project$Main$webGL = _List_fromArray(
 			]))
 	]);
 var author$project$Main$slides = _List_fromArray(
-	[author$project$Main$cover, author$project$Main$selfIntroduce, author$project$Main$jsLibraries, author$project$Main$ports, author$project$Main$hope, author$project$Main$elmPackages, author$project$Main$visualization, author$project$Main$jackhp95_mapbox, author$project$Main$gampleman_mapbox, author$project$Main$webGL, author$project$Main$planning, author$project$Main$fin]);
+	[author$project$Main$cover, author$project$Main$selfIntroduce, author$project$Main$jsLibraries, author$project$Main$ports, author$project$Main$hope, author$project$Main$weAreNeverEverGettingBackTogether, author$project$Main$elmPackages, author$project$Main$visualization, author$project$Main$jackhp95_mapbox, author$project$Main$gampleman_mapbox, author$project$Main$webGL, author$project$Main$planning, author$project$Main$fin]);
 var elm$core$Platform$Sub$none = elm$core$Platform$Sub$batch(_List_Nil);
 var w0rm$elm_slice_show$SliceShow$Model$init = F2(
 	function (slides, key) {
