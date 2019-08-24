@@ -24,6 +24,7 @@ slides =
     [ notice
     , cover
     , selfIntroduce
+    , prologue
     , jsLibraries
     , ports
     , hope
@@ -123,11 +124,22 @@ selfIntroduce =
     ]
 
 
+prologue : List Content
+prologue =
+    [ colored "#F6F6F6"
+        "hsl(40, 60%, 45%)"
+        [ spacer 300
+        , item
+            (span [ style "font-size" "5rem" ] [ text "JavaScript のライブラリを使っていますか？" ])
+        ]
+    ]
+
+
 jsLibraries : List Content
 jsLibraries =
     [ colored "#F6F6F6"
         "hsl(40, 60%, 45%)"
-        [ title "JavaScript のライブラリ"
+        [ title "JavaScript でグラフィックスを扱う"
         , item
             (ul []
                 [ li []
@@ -184,7 +196,7 @@ hope : List Content
 hope =
     [ colored "#F6F6F6"
         "hsl(40, 60%, 45%)"
-        [ spacer 200
+        [ spacer 250
         , item
             (span [ style "font-size" "5rem" ] [ text "でも..." ])
         , spacer 0
@@ -216,7 +228,7 @@ elmPackages : List Content
 elmPackages =
     [ colored "#F6F6F6"
         "hsl(40, 60%, 45%)"
-        [ title "Elm packages"
+        [ title "Elm Packages"
         , item
             (ul []
                 [ li []

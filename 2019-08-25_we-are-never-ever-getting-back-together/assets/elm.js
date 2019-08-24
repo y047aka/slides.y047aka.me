@@ -11044,7 +11044,7 @@ var author$project$Main$elmPackages = _List_fromArray(
 		'hsl(40, 60%, 45%)',
 		_List_fromArray(
 			[
-				author$project$Formatting$title('Elm packages'),
+				author$project$Formatting$title('Elm Packages'),
 				w0rm$elm_slice_show$SliceShow$Content$item(
 				A2(
 					elm$html$Html$ul,
@@ -11176,7 +11176,7 @@ var author$project$Main$hope = _List_fromArray(
 		'hsl(40, 60%, 45%)',
 		_List_fromArray(
 			[
-				author$project$Formatting$spacer(200),
+				author$project$Formatting$spacer(250),
 				w0rm$elm_slice_show$SliceShow$Content$item(
 				A2(
 					elm$html$Html$span,
@@ -11227,7 +11227,7 @@ var author$project$Main$jsLibraries = _List_fromArray(
 		'hsl(40, 60%, 45%)',
 		_List_fromArray(
 			[
-				author$project$Formatting$title('JavaScript のライブラリ'),
+				author$project$Formatting$title('JavaScript でグラフィックスを扱う'),
 				w0rm$elm_slice_show$SliceShow$Content$item(
 				A2(
 					elm$html$Html$ul,
@@ -12006,6 +12006,28 @@ var author$project$Main$ports = _List_fromArray(
 				author$project$Formatting$code('const app = Elm.Main.init();\n\napp.ports.cache.subscribe((data) => {\n  localStorage.setItem(\'cache\', JSON.stringify(data));\n});\n')
 			]))
 	]);
+var author$project$Main$prologue = _List_fromArray(
+	[
+		A3(
+		author$project$Formatting$colored,
+		'#F6F6F6',
+		'hsl(40, 60%, 45%)',
+		_List_fromArray(
+			[
+				author$project$Formatting$spacer(300),
+				w0rm$elm_slice_show$SliceShow$Content$item(
+				A2(
+					elm$html$Html$span,
+					_List_fromArray(
+						[
+							A2(elm$html$Html$Attributes$style, 'font-size', '5rem')
+						]),
+					_List_fromArray(
+						[
+							elm$html$Html$text('JavaScript のライブラリを使っていますか？')
+						])))
+			]))
+	]);
 var author$project$Formatting$bulletLink = F2(
 	function (str, url) {
 		return w0rm$elm_slice_show$SliceShow$Content$item(
@@ -12127,7 +12149,7 @@ var author$project$Main$webGL = _List_fromArray(
 			]))
 	]);
 var author$project$Main$slides = _List_fromArray(
-	[author$project$Main$notice, author$project$Main$cover, author$project$Main$selfIntroduce, author$project$Main$jsLibraries, author$project$Main$ports, author$project$Main$hope, author$project$Main$weAreNeverEverGettingBackTogether, author$project$Main$elmPackages, author$project$Main$visualization, author$project$Main$jackhp95_mapbox, author$project$Main$gampleman_mapbox, author$project$Main$webGL, author$project$Main$planning, author$project$Main$fin]);
+	[author$project$Main$notice, author$project$Main$cover, author$project$Main$selfIntroduce, author$project$Main$prologue, author$project$Main$jsLibraries, author$project$Main$ports, author$project$Main$hope, author$project$Main$weAreNeverEverGettingBackTogether, author$project$Main$elmPackages, author$project$Main$visualization, author$project$Main$jackhp95_mapbox, author$project$Main$gampleman_mapbox, author$project$Main$webGL, author$project$Main$planning, author$project$Main$fin]);
 var elm$core$Platform$Sub$none = elm$core$Platform$Sub$batch(_List_Nil);
 var w0rm$elm_slice_show$SliceShow$Model$init = F2(
 	function (slides, key) {
