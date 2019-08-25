@@ -289,13 +289,17 @@ jackhp95_mapbox =
 gampleman_mapbox : List Content
 gampleman_mapbox =
     [ colored "#F6F6F6"
-        "hsl(40, 60%, 45%)"
-        [ title "gampleman/elm-mapbox"
-        , bullets
-            [ bullet "Ports を使う（npmで配布されている）"
-            , bullet "Mapbox GL JS をラップしている"
-            , bullet "バイナリベクトルタイルに対応している！"
-            ]
+        "hsla(220, 0%, 0%, 0.5)"
+        [ Custom.mapbox { width = 1280, height = 720 } |> position 0 0
+        , [ title "gampleman/elm-mapbox"
+          , bullets
+                [ bullet "Ports を使う（npmで配布されている）"
+                , bullet "Mapbox GL JS をラップしている"
+                , bullet "バイナリベクトルタイルに対応している！"
+                ]
+          ]
+            |> group 100 25 1100 280
+            |> noPointerEvents
         ]
     ]
 

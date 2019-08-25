@@ -15,6 +15,7 @@
             "elm-explorations/linear-algebra": "1.0.3",
             "elm-explorations/webgl": "1.0.1",
             "folkertdev/one-true-path-experiment": "4.0.3",
+            "gampleman/elm-mapbox": "4.1.0",
             "w0rm/elm-physics": "3.2.2",
             "w0rm/elm-slice-show": "5.0.2"
         },

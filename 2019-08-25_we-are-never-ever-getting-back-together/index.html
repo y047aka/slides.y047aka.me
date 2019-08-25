@@ -38,11 +38,16 @@
       margin: 1em 0;
     }
   </style>
+  <script src="./assets/elm-mapbox/dist/elm-mapbox.umd.js"></script>
   <script src="assets/elm.js"></script>
 </head>
 
 <body>
-  <script>Elm.Main.init();</script>
+  <script>
+    elmMapbox.registerCustomElement()
+    const app = Elm.Main.init()
+    elmMapbox.registerPorts(app)
+  </script>
 </body>
 
 </html>

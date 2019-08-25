@@ -5983,6 +5983,9 @@ function _WebGL_diff(oldModel, newModel) {
 var author$project$Custom$LackMsg = function (a) {
 	return {$: 'LackMsg', a: a};
 };
+var author$project$Custom$MapboxMsg = function (a) {
+	return {$: 'MapboxMsg', a: a};
+};
 var elm$browser$Browser$AnimationManager$Delta = function (a) {
 	return {$: 'Delta', a: a};
 };
@@ -7343,16 +7346,31 @@ var author$project$Custom$Lack$subscriptions = function (_n0) {
 				author$project$Common$Events$onAnimationFrameDelta(author$project$Custom$Lack$Tick)
 			]));
 };
+var elm$core$Platform$Sub$none = elm$core$Platform$Sub$batch(_List_Nil);
+var author$project$Custom$Mapbox$subscriptions = function (_n0) {
+	return elm$core$Platform$Sub$none;
+};
 var elm$core$Platform$Sub$map = _Platform_map;
 var author$project$Custom$subscriptions = function (model) {
-	var submodel = model.a;
-	return A2(
-		elm$core$Platform$Sub$map,
-		author$project$Custom$LackMsg,
-		author$project$Custom$Lack$subscriptions(submodel));
+	if (model.$ === 'LackModel') {
+		var submodel = model.a;
+		return A2(
+			elm$core$Platform$Sub$map,
+			author$project$Custom$LackMsg,
+			author$project$Custom$Lack$subscriptions(submodel));
+	} else {
+		var submodel = model.a;
+		return A2(
+			elm$core$Platform$Sub$map,
+			author$project$Custom$MapboxMsg,
+			author$project$Custom$Mapbox$subscriptions(submodel));
+	}
 };
 var author$project$Custom$LackModel = function (a) {
 	return {$: 'LackModel', a: a};
+};
+var author$project$Custom$MapboxModel = function (a) {
+	return {$: 'MapboxModel', a: a};
 };
 var elm$browser$Browser$Dom$getViewport = _Browser_withWindow(_Browser_getViewport);
 var author$project$Common$Events$measureSize = function (fn) {
@@ -10120,18 +10138,192 @@ var author$project$Custom$Lack$update = F2(
 					elm$core$Platform$Cmd$none);
 		}
 	});
+var author$project$Common$MapCommands$elmMapboxOutgoing = _Platform_outgoingPort('elmMapboxOutgoing', elm$core$Basics$identity);
+var author$project$Common$MapCommands$id = 'my-map';
+var elm$json$Json$Encode$float = _Json_wrap;
+var elm$json$Json$Encode$list = F2(
+	function (func, entries) {
+		return _Json_wrap(
+			A3(
+				elm$core$List$foldl,
+				_Json_addEntry(func),
+				_Json_emptyArray(_Utils_Tuple0),
+				entries));
+	});
+var gampleman$elm_mapbox$LngLat$encodeAsPair = function (_n0) {
+	var lng = _n0.lng;
+	var lat = _n0.lat;
+	return A2(
+		elm$json$Json$Encode$list,
+		elm$json$Json$Encode$float,
+		_List_fromArray(
+			[lng, lat]));
+};
+var elm$json$Json$Encode$object = function (pairs) {
+	return _Json_wrap(
+		A3(
+			elm$core$List$foldl,
+			F2(
+				function (_n0, obj) {
+					var k = _n0.a;
+					var v = _n0.b;
+					return A3(_Json_addField, k, v, obj);
+				}),
+			_Json_emptyObject(_Utils_Tuple0),
+			pairs));
+};
+var gampleman$elm_mapbox$Mapbox$Cmd$Template$encodeOptions = function (opts) {
+	return _Utils_Tuple2(
+		'options',
+		elm$json$Json$Encode$object(
+			A2(
+				elm$core$List$map,
+				function (_n0) {
+					var key = _n0.a;
+					var val = _n0.b;
+					return _Utils_Tuple2(key, val);
+				},
+				opts)));
+};
+var elm$json$Json$Encode$string = _Json_wrap;
+var gampleman$elm_mapbox$Mapbox$Cmd$Template$makeCmd = F4(
+	function (prt, id, command, params) {
+		return prt(
+			elm$json$Json$Encode$object(
+				A2(
+					elm$core$List$cons,
+					_Utils_Tuple2(
+						'command',
+						elm$json$Json$Encode$string(command)),
+					A2(
+						elm$core$List$cons,
+						_Utils_Tuple2(
+							'target',
+							elm$json$Json$Encode$string(id)),
+						params))));
+	});
+var gampleman$elm_mapbox$Mapbox$Helpers$encodePair = F2(
+	function (encoder, _n0) {
+		var a = _n0.a;
+		var b = _n0.b;
+		return A2(
+			elm$json$Json$Encode$list,
+			encoder,
+			_List_fromArray(
+				[a, b]));
+	});
+var gampleman$elm_mapbox$Mapbox$Cmd$Template$fitBounds = F4(
+	function (prt, id, options, bounds) {
+		return A4(
+			gampleman$elm_mapbox$Mapbox$Cmd$Template$makeCmd,
+			prt,
+			id,
+			'fitBounds',
+			_List_fromArray(
+				[
+					_Utils_Tuple2(
+					'bounds',
+					A2(gampleman$elm_mapbox$Mapbox$Helpers$encodePair, gampleman$elm_mapbox$LngLat$encodeAsPair, bounds)),
+					gampleman$elm_mapbox$Mapbox$Cmd$Template$encodeOptions(options)
+				]));
+	});
+var author$project$Common$MapCommands$fitBounds = A2(gampleman$elm_mapbox$Mapbox$Cmd$Template$fitBounds, author$project$Common$MapCommands$elmMapboxOutgoing, author$project$Common$MapCommands$id);
+var gampleman$elm_mapbox$LngLat$map = F2(
+	function (f, _n0) {
+		var lng = _n0.lng;
+		var lat = _n0.lat;
+		return {
+			lat: f(lat),
+			lng: f(lng)
+		};
+	});
+var elm$json$Json$Encode$bool = _Json_wrap;
+var gampleman$elm_mapbox$Mapbox$Cmd$Internal$Option = F2(
+	function (a, b) {
+		return {$: 'Option', a: a, b: b};
+	});
+var gampleman$elm_mapbox$Mapbox$Cmd$Option$linear = A2(
+	elm$core$Basics$composeR,
+	elm$json$Json$Encode$bool,
+	gampleman$elm_mapbox$Mapbox$Cmd$Internal$Option('linear'));
+var gampleman$elm_mapbox$Mapbox$Cmd$Option$maxZoom = A2(
+	elm$core$Basics$composeR,
+	elm$json$Json$Encode$float,
+	gampleman$elm_mapbox$Mapbox$Cmd$Internal$Option('maxZoom'));
+var author$project$Custom$Mapbox$update = F2(
+	function (msg, model) {
+		if (msg.$ === 'Hover') {
+			var lngLat = msg.a.lngLat;
+			var renderedFeatures = msg.a.renderedFeatures;
+			return _Utils_Tuple2(
+				_Utils_update(
+					model,
+					{features: renderedFeatures, position: lngLat}),
+				elm$core$Platform$Cmd$none);
+		} else {
+			var lngLat = msg.a.lngLat;
+			var renderedFeatures = msg.a.renderedFeatures;
+			return _Utils_Tuple2(
+				_Utils_update(
+					model,
+					{features: renderedFeatures, position: lngLat}),
+				A2(
+					author$project$Common$MapCommands$fitBounds,
+					_List_fromArray(
+						[
+							gampleman$elm_mapbox$Mapbox$Cmd$Option$linear(true),
+							gampleman$elm_mapbox$Mapbox$Cmd$Option$maxZoom(10)
+						]),
+					_Utils_Tuple2(
+						A2(
+							gampleman$elm_mapbox$LngLat$map,
+							function (a) {
+								return a - 0.2;
+							},
+							lngLat),
+						A2(
+							gampleman$elm_mapbox$LngLat$map,
+							function (a) {
+								return a + 0.2;
+							},
+							lngLat))));
+		}
+	});
 var elm$core$Platform$Cmd$map = _Platform_map;
 var author$project$Custom$update = F2(
 	function (action, model) {
 		var _n0 = _Utils_Tuple2(action, model);
-		var a = _n0.a.a;
-		var m = _n0.b.a;
-		var _n1 = A2(author$project$Custom$Lack$update, a, m);
-		var newModel = _n1.a;
-		var newCmd = _n1.b;
-		return _Utils_Tuple2(
-			author$project$Custom$LackModel(newModel),
-			A2(elm$core$Platform$Cmd$map, author$project$Custom$LackMsg, newCmd));
+		_n0$2:
+		while (true) {
+			if (_n0.a.$ === 'LackMsg') {
+				if (_n0.b.$ === 'LackModel') {
+					var a = _n0.a.a;
+					var m = _n0.b.a;
+					var _n1 = A2(author$project$Custom$Lack$update, a, m);
+					var newModel = _n1.a;
+					var newCmd = _n1.b;
+					return _Utils_Tuple2(
+						author$project$Custom$LackModel(newModel),
+						A2(elm$core$Platform$Cmd$map, author$project$Custom$LackMsg, newCmd));
+				} else {
+					break _n0$2;
+				}
+			} else {
+				if (_n0.b.$ === 'MapboxModel') {
+					var a = _n0.a.a;
+					var m = _n0.b.a;
+					var _n2 = A2(author$project$Custom$Mapbox$update, a, m);
+					var newModel = _n2.a;
+					var newCmd = _n2.b;
+					return _Utils_Tuple2(
+						author$project$Custom$MapboxModel(newModel),
+						A2(elm$core$Platform$Cmd$map, author$project$Custom$MapboxMsg, newCmd));
+				} else {
+					break _n0$2;
+				}
+			}
+		}
+		return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
 	});
 var elm_explorations$linear_algebra$Math$Matrix4$toRecord = _MJS_m4x4toRecord;
 var elm_explorations$linear_algebra$Math$Vector4$dot = _MJS_v4dot;
@@ -10875,14 +11067,890 @@ var author$project$Custom$Lack$view = function (_n0) {
 				})
 			]));
 };
+var author$project$Custom$Mapbox$Click = function (a) {
+	return {$: 'Click', a: a};
+};
+var author$project$Custom$Mapbox$Hover = function (a) {
+	return {$: 'Hover', a: a};
+};
+var elm$core$Result$withDefault = F2(
+	function (def, result) {
+		if (result.$ === 'Ok') {
+			var a = result.a;
+			return a;
+		} else {
+			return def;
+		}
+	});
+var elm$json$Json$Decode$decodeString = _Json_runOnString;
+var elm$json$Json$Decode$value = _Json_decodeValue;
+var author$project$Custom$Mapbox$geojson = A2(
+	elm$core$Result$withDefault,
+	elm$json$Json$Encode$object(_List_Nil),
+	A2(elm$json$Json$Decode$decodeString, elm$json$Json$Decode$value, '\n{\n  "type": "FeatureCollection",\n  "features": [\n    {\n      "type": "Feature",\n      "id": 1,\n      "properties": {\n        "name": "Bermuda Triangle",\n        "area": 1150180\n      },\n      "geometry": {\n        "type": "Polygon",\n        "coordinates": [\n          [\n            [-64.73, 32.31],\n            [-80.19, 25.76],\n            [-66.09, 18.43],\n            [-64.73, 32.31]\n          ]\n        ]\n      }\n    }\n  ]\n}\n'));
+var elm$virtual_dom$VirtualDom$property = F2(
+	function (key, value) {
+		return A2(
+			_VirtualDom_property,
+			_VirtualDom_noInnerHtmlOrFormAction(key),
+			_VirtualDom_noJavaScriptOrHtmlUri(value));
+	});
+var elm$html$Html$Attributes$property = elm$virtual_dom$VirtualDom$property;
+var gampleman$elm_mapbox$Mapbox$Element$MapboxAttr = function (a) {
+	return {$: 'MapboxAttr', a: a};
+};
+var gampleman$elm_mapbox$Mapbox$Element$featureState = A2(
+	elm$core$Basics$composeR,
+	elm$json$Json$Encode$list(
+		function (_n0) {
+			var feature = _n0.a;
+			var state = _n0.b;
+			return A2(
+				elm$json$Json$Encode$list,
+				elm$core$Basics$identity,
+				_List_fromArray(
+					[
+						feature,
+						elm$json$Json$Encode$object(state)
+					]));
+		}),
+	A2(
+		elm$core$Basics$composeR,
+		elm$html$Html$Attributes$property('featureState'),
+		gampleman$elm_mapbox$Mapbox$Element$MapboxAttr));
+var author$project$Custom$Mapbox$hoveredFeatures = A2(
+	elm$core$Basics$composeR,
+	elm$core$List$map(
+		function (feat) {
+			return _Utils_Tuple2(
+				feat,
+				_List_fromArray(
+					[
+						_Utils_Tuple2(
+						'hover',
+						elm$json$Json$Encode$bool(true))
+					]));
+		}),
+	gampleman$elm_mapbox$Mapbox$Element$featureState);
+var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
+var gampleman$elm_mapbox$LngLat$LngLat = F2(
+	function (lng, lat) {
+		return {lat: lat, lng: lng};
+	});
+var elm$core$Basics$truncate = _Basics_truncate;
+var gampleman$elm_mapbox$LngLat$toDMS = F3(
+	function (angle, pos, neg) {
+		var prefix = (angle > 0) ? pos : neg;
+		var absAngle = elm$core$Basics$abs(angle);
+		var degrees = absAngle | 0;
+		var minutes = (absAngle - degrees) * 60;
+		var seconds = elm$core$Basics$round((minutes - (minutes | 0)) * 60);
+		return elm$core$String$fromInt(degrees) + ('° ' + (elm$core$String$fromInt(minutes | 0) + ('\' ' + (elm$core$String$fromInt(seconds) + ('\"' + prefix)))));
+	});
+var gampleman$elm_mapbox$LngLat$toString = function (_n0) {
+	var lng = _n0.lng;
+	var lat = _n0.lat;
+	return A3(gampleman$elm_mapbox$LngLat$toDMS, lat, 'N', 'S') + (' ' + A3(gampleman$elm_mapbox$LngLat$toDMS, lng, 'E', 'W'));
+};
+var elm$virtual_dom$VirtualDom$node = function (tag) {
+	return _VirtualDom_node(
+		_VirtualDom_noScript(tag));
+};
+var elm$html$Html$node = elm$virtual_dom$VirtualDom$node;
+var elm$virtual_dom$VirtualDom$attribute = F2(
+	function (key, value) {
+		return A2(
+			_VirtualDom_attribute,
+			_VirtualDom_noOnOrFormAction(key),
+			_VirtualDom_noJavaScriptOrHtmlUri(value));
+	});
+var elm$html$Html$Attributes$attribute = elm$virtual_dom$VirtualDom$attribute;
+var gampleman$elm_mapbox$Mapbox$Element$css = A3(
+	elm$html$Html$node,
+	'link',
+	_List_fromArray(
+		[
+			A2(elm$html$Html$Attributes$attribute, 'href', 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css'),
+			A2(elm$html$Html$Attributes$attribute, 'rel', 'stylesheet')
+		]),
+	_List_Nil);
+var gampleman$elm_mapbox$Mapbox$Element$eventFeaturesLayers = A2(
+	elm$core$Basics$composeR,
+	elm$json$Json$Encode$list(elm$json$Json$Encode$string),
+	A2(
+		elm$core$Basics$composeR,
+		elm$html$Html$Attributes$property('eventFeaturesLayers'),
+		gampleman$elm_mapbox$Mapbox$Element$MapboxAttr));
+var gampleman$elm_mapbox$Mapbox$Element$id = A2(
+	elm$core$Basics$composeR,
+	elm$html$Html$Attributes$attribute('id'),
+	gampleman$elm_mapbox$Mapbox$Element$MapboxAttr);
+var elm$json$Json$Encode$int = _Json_wrap;
+var gampleman$elm_mapbox$Mapbox$Layer$encode = function (_n0) {
+	var value = _n0.a;
+	return value;
+};
+var gampleman$elm_mapbox$Mapbox$Source$encode = function (_n0) {
+	var value = _n0.b;
+	return value;
+};
+var gampleman$elm_mapbox$Mapbox$Source$getId = function (_n0) {
+	var k = _n0.a;
+	return k;
+};
+var gampleman$elm_mapbox$Mapbox$Expression$encode = function (_n0) {
+	var value = _n0.a;
+	return value;
+};
+var gampleman$elm_mapbox$Mapbox$Style$encodeLight = function (_n0) {
+	var anchor = _n0.anchor;
+	var position = _n0.position;
+	var color = _n0.color;
+	var intensity = _n0.intensity;
+	return elm$json$Json$Encode$object(
+		_List_fromArray(
+			[
+				_Utils_Tuple2(
+				'anchor',
+				gampleman$elm_mapbox$Mapbox$Expression$encode(anchor)),
+				_Utils_Tuple2(
+				'position',
+				gampleman$elm_mapbox$Mapbox$Expression$encode(position)),
+				_Utils_Tuple2(
+				'color',
+				gampleman$elm_mapbox$Mapbox$Expression$encode(color)),
+				_Utils_Tuple2(
+				'intensity',
+				gampleman$elm_mapbox$Mapbox$Expression$encode(intensity))
+			]));
+};
+var gampleman$elm_mapbox$Mapbox$Style$encodeTransition = function (_n0) {
+	var duration = _n0.duration;
+	var delay = _n0.delay;
+	return elm$json$Json$Encode$object(
+		_List_fromArray(
+			[
+				_Utils_Tuple2(
+				'duration',
+				elm$json$Json$Encode$int(duration)),
+				_Utils_Tuple2(
+				'delay',
+				elm$json$Json$Encode$int(delay))
+			]));
+};
+var gampleman$elm_mapbox$Mapbox$Style$encode = function (style) {
+	if (style.$ === 'Style') {
+		var styleDef = style.a;
+		return elm$json$Json$Encode$object(
+			_Utils_ap(
+				_List_fromArray(
+					[
+						_Utils_Tuple2(
+						'version',
+						elm$json$Json$Encode$int(8)),
+						_Utils_Tuple2(
+						'transition',
+						gampleman$elm_mapbox$Mapbox$Style$encodeTransition(styleDef.transition)),
+						_Utils_Tuple2(
+						'light',
+						gampleman$elm_mapbox$Mapbox$Style$encodeLight(styleDef.light)),
+						_Utils_Tuple2(
+						'sources',
+						elm$json$Json$Encode$object(
+							A2(
+								elm$core$List$map,
+								function (source) {
+									return _Utils_Tuple2(
+										gampleman$elm_mapbox$Mapbox$Source$getId(source),
+										gampleman$elm_mapbox$Mapbox$Source$encode(source));
+								},
+								styleDef.sources))),
+						_Utils_Tuple2(
+						'layers',
+						A2(elm$json$Json$Encode$list, gampleman$elm_mapbox$Mapbox$Layer$encode, styleDef.layers))
+					]),
+				A2(
+					elm$core$List$map,
+					function (_n1) {
+						var key = _n1.a;
+						var value = _n1.b;
+						return _Utils_Tuple2(key, value);
+					},
+					styleDef.misc)));
+	} else {
+		var s = style.a;
+		return elm$json$Json$Encode$string(s);
+	}
+};
+var gampleman$elm_mapbox$Mapbox$Element$map = F2(
+	function (attrs, style) {
+		var props = A2(
+			elm$core$List$cons,
+			A2(
+				elm$html$Html$Attributes$property,
+				'mapboxStyle',
+				gampleman$elm_mapbox$Mapbox$Style$encode(style)),
+			A2(
+				elm$core$List$map,
+				function (_n0) {
+					var attr = _n0.a;
+					return attr;
+				},
+				attrs));
+		return A3(elm$html$Html$node, 'elm-mapbox-map', props, _List_Nil);
+	});
+var gampleman$elm_mapbox$Mapbox$Element$maxZoom = A2(
+	elm$core$Basics$composeR,
+	elm$json$Json$Encode$float,
+	A2(
+		elm$core$Basics$composeR,
+		elm$html$Html$Attributes$property('maxZoom'),
+		gampleman$elm_mapbox$Mapbox$Element$MapboxAttr));
+var elm$json$Json$Decode$list = _Json_decodeList;
+var elm$json$Json$Decode$map3 = _Json_map3;
+var gampleman$elm_mapbox$LngLat$decodeFromObject = A3(
+	elm$json$Json$Decode$map2,
+	gampleman$elm_mapbox$LngLat$LngLat,
+	A2(elm$json$Json$Decode$field, 'lng', elm$json$Json$Decode$float),
+	A2(elm$json$Json$Decode$field, 'lat', elm$json$Json$Decode$float));
+var gampleman$elm_mapbox$Mapbox$Element$EventData = F3(
+	function (point, lngLat, renderedFeatures) {
+		return {lngLat: lngLat, point: point, renderedFeatures: renderedFeatures};
+	});
+var gampleman$elm_mapbox$Mapbox$Element$decodePoint = A3(
+	elm$json$Json$Decode$map2,
+	F2(
+		function (a, b) {
+			return _Utils_Tuple2(
+				elm$core$Basics$round(a),
+				elm$core$Basics$round(b));
+		}),
+	A2(elm$json$Json$Decode$field, 'x', elm$json$Json$Decode$float),
+	A2(elm$json$Json$Decode$field, 'y', elm$json$Json$Decode$float));
+var gampleman$elm_mapbox$Mapbox$Element$decodeEventData = A4(
+	elm$json$Json$Decode$map3,
+	gampleman$elm_mapbox$Mapbox$Element$EventData,
+	A2(elm$json$Json$Decode$field, 'point', gampleman$elm_mapbox$Mapbox$Element$decodePoint),
+	A2(elm$json$Json$Decode$field, 'lngLat', gampleman$elm_mapbox$LngLat$decodeFromObject),
+	A2(
+		elm$json$Json$Decode$field,
+		'features',
+		elm$json$Json$Decode$list(elm$json$Json$Decode$value)));
+var gampleman$elm_mapbox$Mapbox$Element$onClick = function (tagger) {
+	return gampleman$elm_mapbox$Mapbox$Element$MapboxAttr(
+		A2(
+			elm$html$Html$Events$on,
+			'click',
+			A2(elm$json$Json$Decode$map, tagger, gampleman$elm_mapbox$Mapbox$Element$decodeEventData)));
+};
+var gampleman$elm_mapbox$Mapbox$Element$onMouseMove = function (tagger) {
+	return gampleman$elm_mapbox$Mapbox$Element$MapboxAttr(
+		A2(
+			elm$html$Html$Events$on,
+			'mousemove',
+			A2(elm$json$Json$Decode$map, tagger, gampleman$elm_mapbox$Mapbox$Element$decodeEventData)));
+};
+var gampleman$elm_mapbox$Mapbox$Element$token = A2(
+	elm$core$Basics$composeR,
+	elm$json$Json$Encode$string,
+	A2(
+		elm$core$Basics$composeR,
+		elm$html$Html$Attributes$property('token'),
+		gampleman$elm_mapbox$Mapbox$Element$MapboxAttr));
+var gampleman$elm_mapbox$Internal$Expression = function (a) {
+	return {$: 'Expression', a: a};
+};
+var gampleman$elm_mapbox$Mapbox$Expression$call = F2(
+	function (name, args) {
+		return gampleman$elm_mapbox$Internal$Expression(
+			A2(
+				elm$json$Json$Encode$list,
+				elm$core$Basics$identity,
+				A2(
+					elm$core$List$cons,
+					elm$json$Json$Encode$string(name),
+					args)));
+	});
+var gampleman$elm_mapbox$Mapbox$Expression$calln = F2(
+	function (n, expressions) {
+		return A2(
+			gampleman$elm_mapbox$Mapbox$Expression$call,
+			n,
+			A2(elm$core$List$map, gampleman$elm_mapbox$Mapbox$Expression$encode, expressions));
+	});
+var gampleman$elm_mapbox$Mapbox$Expression$all = gampleman$elm_mapbox$Mapbox$Expression$calln('all');
+var gampleman$elm_mapbox$Mapbox$Expression$call1 = F2(
+	function (n, _n0) {
+		var a = _n0.a;
+		return A2(
+			gampleman$elm_mapbox$Mapbox$Expression$call,
+			n,
+			_List_fromArray(
+				[a]));
+	});
+var gampleman$elm_mapbox$Mapbox$Expression$featureState = gampleman$elm_mapbox$Mapbox$Expression$call1('feature-state');
+var gampleman$elm_mapbox$Mapbox$Expression$float = function (number) {
+	return gampleman$elm_mapbox$Internal$Expression(
+		elm$json$Json$Encode$float(number));
+};
+var gampleman$elm_mapbox$Mapbox$Expression$FormattedString = F3(
+	function (a, b, c) {
+		return {$: 'FormattedString', a: a, b: b, c: c};
+	});
+var gampleman$elm_mapbox$Mapbox$Expression$fontScaledBy = F2(
+	function (scale, _n0) {
+		var s = _n0.a;
+		var fs = _n0.c;
+		return A3(
+			gampleman$elm_mapbox$Mapbox$Expression$FormattedString,
+			s,
+			elm$core$Maybe$Just(
+				gampleman$elm_mapbox$Mapbox$Expression$encode(scale)),
+			fs);
+	});
+var elm$core$List$append = F2(
+	function (xs, ys) {
+		if (!ys.b) {
+			return xs;
+		} else {
+			return A3(elm$core$List$foldr, elm$core$List$cons, ys, xs);
+		}
+	});
+var elm$core$List$concat = function (lists) {
+	return A3(elm$core$List$foldr, elm$core$List$append, _List_Nil, lists);
+};
+var elm$core$List$concatMap = F2(
+	function (f, list) {
+		return elm$core$List$concat(
+			A2(elm$core$List$map, f, list));
+	});
+var gampleman$elm_mapbox$Mapbox$Expression$encodeFormatArgs = F2(
+	function (maybeScaleExpr, maybeFontStack) {
+		return elm$json$Json$Encode$object(
+			A2(
+				elm$core$List$filterMap,
+				elm$core$Basics$identity,
+				_List_fromArray(
+					[
+						A2(
+						elm$core$Maybe$map,
+						function (scaleExp) {
+							return _Utils_Tuple2('font-scale', scaleExp);
+						},
+						maybeScaleExpr),
+						A2(
+						elm$core$Maybe$map,
+						function (fontStack) {
+							return _Utils_Tuple2('text-font', fontStack);
+						},
+						maybeFontStack)
+					])));
+	});
+var gampleman$elm_mapbox$Mapbox$Expression$format = A2(
+	elm$core$Basics$composeR,
+	elm$core$List$concatMap(
+		function (_n0) {
+			var strExpr = _n0.a;
+			var maybeScaleExpr = _n0.b;
+			var maybeFontStack = _n0.c;
+			return _List_fromArray(
+				[
+					strExpr,
+					A2(gampleman$elm_mapbox$Mapbox$Expression$encodeFormatArgs, maybeScaleExpr, maybeFontStack)
+				]);
+		}),
+	gampleman$elm_mapbox$Mapbox$Expression$call('format'));
+var gampleman$elm_mapbox$Mapbox$Expression$formatted = function (s) {
+	return A3(
+		gampleman$elm_mapbox$Mapbox$Expression$FormattedString,
+		gampleman$elm_mapbox$Mapbox$Expression$encode(s),
+		elm$core$Maybe$Nothing,
+		elm$core$Maybe$Nothing);
+};
+var gampleman$elm_mapbox$Mapbox$Expression$getProperty = gampleman$elm_mapbox$Mapbox$Expression$call1('get');
+var gampleman$elm_mapbox$Mapbox$Expression$call2 = F3(
+	function (n, _n0, _n1) {
+		var a = _n0.a;
+		var b = _n1.a;
+		return A2(
+			gampleman$elm_mapbox$Mapbox$Expression$call,
+			n,
+			_List_fromArray(
+				[a, b]));
+	});
+var gampleman$elm_mapbox$Mapbox$Expression$greaterThan = gampleman$elm_mapbox$Mapbox$Expression$call2('>');
+var gampleman$elm_mapbox$Mapbox$Expression$call3 = F4(
+	function (n, _n0, _n1, _n2) {
+		var a = _n0.a;
+		var b = _n1.a;
+		var c = _n2.a;
+		return A2(
+			gampleman$elm_mapbox$Mapbox$Expression$call,
+			n,
+			_List_fromArray(
+				[a, b, c]));
+	});
+var gampleman$elm_mapbox$Mapbox$Expression$ifElse = gampleman$elm_mapbox$Mapbox$Expression$call3('case');
+var gampleman$elm_mapbox$Mapbox$Expression$int = function (number) {
+	return gampleman$elm_mapbox$Internal$Expression(
+		elm$json$Json$Encode$int(number));
+};
+var gampleman$elm_mapbox$Mapbox$Expression$isEqual = gampleman$elm_mapbox$Mapbox$Expression$call2('==');
+var gampleman$elm_mapbox$Mapbox$Expression$none = gampleman$elm_mapbox$Internal$Expression(
+	elm$json$Json$Encode$string('none'));
+var elm$core$String$fromFloat = _String_fromNumber;
+var gampleman$elm_mapbox$Mapbox$Expression$rgba = F4(
+	function (r, g, b, a) {
+		return gampleman$elm_mapbox$Internal$Expression(
+			elm$json$Json$Encode$string(
+				'rgba(' + (elm$core$String$fromFloat(r) + (', ' + (elm$core$String$fromFloat(g) + (', ' + (elm$core$String$fromFloat(b) + (', ' + (elm$core$String$fromFloat(a) + ')')))))))));
+	});
+var gampleman$elm_mapbox$Mapbox$Expression$str = function (s) {
+	return gampleman$elm_mapbox$Internal$Expression(
+		elm$json$Json$Encode$string(s));
+};
+var gampleman$elm_mapbox$Mapbox$Expression$list = A2(
+	elm$core$Basics$composeR,
+	elm$json$Json$Encode$list(gampleman$elm_mapbox$Mapbox$Expression$encode),
+	A2(
+		elm$core$Basics$composeR,
+		gampleman$elm_mapbox$Internal$Expression,
+		gampleman$elm_mapbox$Mapbox$Expression$call1('literal')));
+var gampleman$elm_mapbox$Mapbox$Expression$strings = A2(
+	elm$core$Basics$composeR,
+	elm$core$List$map(gampleman$elm_mapbox$Mapbox$Expression$str),
+	gampleman$elm_mapbox$Mapbox$Expression$list);
+var gampleman$elm_mapbox$Mapbox$Expression$toBool = gampleman$elm_mapbox$Mapbox$Expression$call1('to-boolean');
+var gampleman$elm_mapbox$Mapbox$Expression$uppercase = gampleman$elm_mapbox$Internal$Expression(
+	elm$json$Json$Encode$string('uppercase'));
+var gampleman$elm_mapbox$Mapbox$Expression$withFont = F2(
+	function (stack, _n0) {
+		var s = _n0.a;
+		var scale = _n0.b;
+		return A3(
+			gampleman$elm_mapbox$Mapbox$Expression$FormattedString,
+			s,
+			scale,
+			elm$core$Maybe$Just(
+				gampleman$elm_mapbox$Mapbox$Expression$encode(stack)));
+	});
+var gampleman$elm_mapbox$Mapbox$Layer$Layer = function (a) {
+	return {$: 'Layer', a: a};
+};
+var gampleman$elm_mapbox$Mapbox$Layer$encodeAttrs = function (attrs) {
+	var _n0 = A3(
+		elm$core$List$foldl,
+		F2(
+			function (attr, lists) {
+				switch (attr.$) {
+					case 'Top':
+						var key = attr.a;
+						var val = attr.b;
+						return _Utils_update(
+							lists,
+							{
+								top: A2(
+									elm$core$List$cons,
+									_Utils_Tuple2(key, val),
+									lists.top)
+							});
+					case 'Paint':
+						var key = attr.a;
+						var val = attr.b;
+						return _Utils_update(
+							lists,
+							{
+								paint: A2(
+									elm$core$List$cons,
+									_Utils_Tuple2(key, val),
+									lists.paint)
+							});
+					default:
+						var key = attr.a;
+						var val = attr.b;
+						return _Utils_update(
+							lists,
+							{
+								layout: A2(
+									elm$core$List$cons,
+									_Utils_Tuple2(key, val),
+									lists.layout)
+							});
+				}
+			}),
+		{layout: _List_Nil, paint: _List_Nil, top: _List_Nil},
+		attrs);
+	var top = _n0.top;
+	var layout = _n0.layout;
+	var paint = _n0.paint;
+	return A2(
+		elm$core$List$cons,
+		_Utils_Tuple2(
+			'layout',
+			elm$json$Json$Encode$object(layout)),
+		A2(
+			elm$core$List$cons,
+			_Utils_Tuple2(
+				'paint',
+				elm$json$Json$Encode$object(paint)),
+			top));
+};
+var gampleman$elm_mapbox$Mapbox$Layer$background = F2(
+	function (id, attrs) {
+		return gampleman$elm_mapbox$Mapbox$Layer$Layer(
+			elm$json$Json$Encode$object(
+				_Utils_ap(
+					_List_fromArray(
+						[
+							_Utils_Tuple2(
+							'type',
+							elm$json$Json$Encode$string('background')),
+							_Utils_Tuple2(
+							'id',
+							elm$json$Json$Encode$string(id))
+						]),
+					gampleman$elm_mapbox$Mapbox$Layer$encodeAttrs(attrs))));
+	});
+var gampleman$elm_mapbox$Mapbox$Layer$Paint = F2(
+	function (a, b) {
+		return {$: 'Paint', a: a, b: b};
+	});
+var gampleman$elm_mapbox$Mapbox$Layer$backgroundColor = A2(
+	elm$core$Basics$composeR,
+	gampleman$elm_mapbox$Mapbox$Expression$encode,
+	gampleman$elm_mapbox$Mapbox$Layer$Paint('background-color'));
+var gampleman$elm_mapbox$Mapbox$Layer$layerImpl = F4(
+	function (tipe, id, source, attrs) {
+		return gampleman$elm_mapbox$Mapbox$Layer$Layer(
+			elm$json$Json$Encode$object(
+				_Utils_ap(
+					_List_fromArray(
+						[
+							_Utils_Tuple2(
+							'type',
+							elm$json$Json$Encode$string(tipe)),
+							_Utils_Tuple2(
+							'id',
+							elm$json$Json$Encode$string(id)),
+							_Utils_Tuple2(
+							'source',
+							elm$json$Json$Encode$string(source))
+						]),
+					gampleman$elm_mapbox$Mapbox$Layer$encodeAttrs(attrs))));
+	});
+var gampleman$elm_mapbox$Mapbox$Layer$fill = gampleman$elm_mapbox$Mapbox$Layer$layerImpl('fill');
+var gampleman$elm_mapbox$Mapbox$Layer$fillOpacity = A2(
+	elm$core$Basics$composeR,
+	gampleman$elm_mapbox$Mapbox$Expression$encode,
+	gampleman$elm_mapbox$Mapbox$Layer$Paint('fill-opacity'));
+var gampleman$elm_mapbox$Mapbox$Layer$Top = F2(
+	function (a, b) {
+		return {$: 'Top', a: a, b: b};
+	});
+var gampleman$elm_mapbox$Mapbox$Layer$filter = A2(
+	elm$core$Basics$composeR,
+	gampleman$elm_mapbox$Mapbox$Expression$encode,
+	gampleman$elm_mapbox$Mapbox$Layer$Top('filter'));
+var gampleman$elm_mapbox$Mapbox$Layer$maxzoom = A2(
+	elm$core$Basics$composeR,
+	elm$json$Json$Encode$float,
+	gampleman$elm_mapbox$Mapbox$Layer$Top('maxzoom'));
+var gampleman$elm_mapbox$Mapbox$Layer$minzoom = A2(
+	elm$core$Basics$composeR,
+	elm$json$Json$Encode$float,
+	gampleman$elm_mapbox$Mapbox$Layer$Top('minzoom'));
+var gampleman$elm_mapbox$Mapbox$Layer$raster = gampleman$elm_mapbox$Mapbox$Layer$layerImpl('raster');
+var gampleman$elm_mapbox$Mapbox$Layer$sourceLayer = A2(
+	elm$core$Basics$composeR,
+	elm$json$Json$Encode$string,
+	gampleman$elm_mapbox$Mapbox$Layer$Top('source-layer'));
+var gampleman$elm_mapbox$Mapbox$Layer$symbol = gampleman$elm_mapbox$Mapbox$Layer$layerImpl('symbol');
+var gampleman$elm_mapbox$Mapbox$Layer$Layout = F2(
+	function (a, b) {
+		return {$: 'Layout', a: a, b: b};
+	});
+var gampleman$elm_mapbox$Mapbox$Layer$textField = A2(
+	elm$core$Basics$composeR,
+	gampleman$elm_mapbox$Mapbox$Expression$encode,
+	gampleman$elm_mapbox$Mapbox$Layer$Layout('text-field'));
+var gampleman$elm_mapbox$Mapbox$Layer$textTransform = A2(
+	elm$core$Basics$composeR,
+	gampleman$elm_mapbox$Mapbox$Expression$encode,
+	gampleman$elm_mapbox$Mapbox$Layer$Layout('text-transform'));
+var gampleman$elm_mapbox$Mapbox$Source$Source = F2(
+	function (a, b) {
+		return {$: 'Source', a: a, b: b};
+	});
+var gampleman$elm_mapbox$Mapbox$Source$geoJSONFromValue = F3(
+	function (id, options, data) {
+		return A2(
+			gampleman$elm_mapbox$Mapbox$Source$Source,
+			id,
+			elm$json$Json$Encode$object(
+				A2(
+					elm$core$List$cons,
+					_Utils_Tuple2('data', data),
+					A2(
+						elm$core$List$cons,
+						_Utils_Tuple2(
+							'type',
+							elm$json$Json$Encode$string('geojson')),
+						A2(
+							elm$core$List$map,
+							function (_n0) {
+								var k = _n0.a;
+								var v = _n0.b;
+								return _Utils_Tuple2(k, v);
+							},
+							options)))));
+	});
+var gampleman$elm_mapbox$Mapbox$Source$raster = F3(
+	function (id, urls, options) {
+		return A2(
+			gampleman$elm_mapbox$Mapbox$Source$Source,
+			id,
+			elm$json$Json$Encode$object(
+				A2(
+					elm$core$List$cons,
+					_Utils_Tuple2(
+						'tiles',
+						A2(elm$json$Json$Encode$list, elm$json$Json$Encode$string, urls)),
+					A2(
+						elm$core$List$cons,
+						_Utils_Tuple2(
+							'type',
+							elm$json$Json$Encode$string('raster')),
+						A2(
+							elm$core$List$map,
+							function (_n0) {
+								var k = _n0.a;
+								var v = _n0.b;
+								return _Utils_Tuple2(k, v);
+							},
+							options)))));
+	});
+var gampleman$elm_mapbox$Mapbox$Source$vectorFromUrl = F2(
+	function (id, url) {
+		return A2(
+			gampleman$elm_mapbox$Mapbox$Source$Source,
+			id,
+			elm$json$Json$Encode$object(
+				_List_fromArray(
+					[
+						_Utils_Tuple2(
+						'type',
+						elm$json$Json$Encode$string('vector')),
+						_Utils_Tuple2(
+						'url',
+						elm$json$Json$Encode$string(url))
+					])));
+	});
+var gampleman$elm_mapbox$Mapbox$Style$MiscAttr = F2(
+	function (a, b) {
+		return {$: 'MiscAttr', a: a, b: b};
+	});
+var gampleman$elm_mapbox$Mapbox$Style$defaultCenter = A2(
+	elm$core$Basics$composeR,
+	gampleman$elm_mapbox$LngLat$encodeAsPair,
+	gampleman$elm_mapbox$Mapbox$Style$MiscAttr('center'));
+var gampleman$elm_mapbox$Mapbox$Style$defaultZoomLevel = A2(
+	elm$core$Basics$composeR,
+	elm$json$Json$Encode$float,
+	gampleman$elm_mapbox$Mapbox$Style$MiscAttr('zoom'));
+var gampleman$elm_mapbox$Mapbox$Style$glyphs = A2(
+	elm$core$Basics$composeR,
+	elm$json$Json$Encode$string,
+	gampleman$elm_mapbox$Mapbox$Style$MiscAttr('glyphs'));
+var gampleman$elm_mapbox$Mapbox$Style$FromUrl = function (a) {
+	return {$: 'FromUrl', a: a};
+};
+var gampleman$elm_mapbox$Mapbox$Style$light = gampleman$elm_mapbox$Mapbox$Style$FromUrl('mapbox://styles/mapbox/light-v9');
+var gampleman$elm_mapbox$Mapbox$Style$name = A2(
+	elm$core$Basics$composeR,
+	elm$json$Json$Encode$string,
+	gampleman$elm_mapbox$Mapbox$Style$MiscAttr('name'));
+var gampleman$elm_mapbox$Mapbox$Style$sprite = A2(
+	elm$core$Basics$composeR,
+	elm$json$Json$Encode$string,
+	gampleman$elm_mapbox$Mapbox$Style$MiscAttr('sprite'));
+var author$project$Custom$Mapbox$view = function (model) {
+	var sources = _List_fromArray(
+		[
+			A2(gampleman$elm_mapbox$Mapbox$Source$vectorFromUrl, 'composite', 'mapbox://mapbox.mapbox-terrain-v2,mapbox.mapbox-streets-v7'),
+			A3(
+			gampleman$elm_mapbox$Mapbox$Source$raster,
+			'm_mono',
+			_List_fromArray(
+				['https://tile.mierune.co.jp/mierune_mono/{z}/{x}/{y}.png']),
+			_List_Nil),
+			A3(gampleman$elm_mapbox$Mapbox$Source$geoJSONFromValue, 'changes', _List_Nil, author$project$Custom$Mapbox$geojson)
+		]);
+	var misc = _List_fromArray(
+		[
+			gampleman$elm_mapbox$Mapbox$Style$name('light'),
+			gampleman$elm_mapbox$Mapbox$Style$defaultCenter(
+			A2(gampleman$elm_mapbox$LngLat$LngLat, 140.0, 38.0)),
+			gampleman$elm_mapbox$Mapbox$Style$defaultZoomLevel(5.0),
+			gampleman$elm_mapbox$Mapbox$Style$sprite('mapbox://sprites/mapbox/streets-v7'),
+			gampleman$elm_mapbox$Mapbox$Style$glyphs('mapbox://fonts/mapbox/{fontstack}/{range}.pbf')
+		]);
+	var layers = _List_fromArray(
+		[
+			A2(
+			gampleman$elm_mapbox$Mapbox$Layer$background,
+			'background',
+			_List_fromArray(
+				[
+					gampleman$elm_mapbox$Mapbox$Layer$backgroundColor(
+					A4(gampleman$elm_mapbox$Mapbox$Expression$rgba, 246, 246, 244, 1))
+				])),
+			A3(
+			gampleman$elm_mapbox$Mapbox$Layer$raster,
+			'mierune_mono',
+			'm_mono',
+			_List_fromArray(
+				[
+					gampleman$elm_mapbox$Mapbox$Layer$minzoom(0),
+					gampleman$elm_mapbox$Mapbox$Layer$maxzoom(14)
+				])),
+			A3(
+			gampleman$elm_mapbox$Mapbox$Layer$symbol,
+			'place-city-lg-n',
+			'composite',
+			_List_fromArray(
+				[
+					gampleman$elm_mapbox$Mapbox$Layer$sourceLayer('place_label'),
+					gampleman$elm_mapbox$Mapbox$Layer$minzoom(1),
+					gampleman$elm_mapbox$Mapbox$Layer$maxzoom(14),
+					gampleman$elm_mapbox$Mapbox$Layer$filter(
+					gampleman$elm_mapbox$Mapbox$Expression$all(
+						_List_fromArray(
+							[
+								A2(
+								gampleman$elm_mapbox$Mapbox$Expression$greaterThan,
+								gampleman$elm_mapbox$Mapbox$Expression$int(2),
+								gampleman$elm_mapbox$Mapbox$Expression$getProperty(
+									gampleman$elm_mapbox$Mapbox$Expression$str('scalerank'))),
+								A2(
+								gampleman$elm_mapbox$Mapbox$Expression$isEqual,
+								gampleman$elm_mapbox$Mapbox$Expression$str('city'),
+								gampleman$elm_mapbox$Mapbox$Expression$getProperty(
+									gampleman$elm_mapbox$Mapbox$Expression$str('type')))
+							]))),
+					gampleman$elm_mapbox$Mapbox$Layer$textField(
+					gampleman$elm_mapbox$Mapbox$Expression$format(
+						_List_fromArray(
+							[
+								A2(
+								gampleman$elm_mapbox$Mapbox$Expression$fontScaledBy,
+								gampleman$elm_mapbox$Mapbox$Expression$float(1.2),
+								gampleman$elm_mapbox$Mapbox$Expression$formatted(
+									gampleman$elm_mapbox$Mapbox$Expression$getProperty(
+										gampleman$elm_mapbox$Mapbox$Expression$str('name_en')))),
+								gampleman$elm_mapbox$Mapbox$Expression$formatted(
+								gampleman$elm_mapbox$Mapbox$Expression$str('\n')),
+								A2(
+								gampleman$elm_mapbox$Mapbox$Expression$withFont,
+								gampleman$elm_mapbox$Mapbox$Expression$strings(
+									_List_fromArray(
+										['DIN Offc Pro Medium'])),
+								A2(
+									gampleman$elm_mapbox$Mapbox$Expression$fontScaledBy,
+									gampleman$elm_mapbox$Mapbox$Expression$float(0.8),
+									gampleman$elm_mapbox$Mapbox$Expression$formatted(
+										gampleman$elm_mapbox$Mapbox$Expression$getProperty(
+											gampleman$elm_mapbox$Mapbox$Expression$str('name')))))
+							]))),
+					gampleman$elm_mapbox$Mapbox$Layer$textTransform(
+					A3(
+						gampleman$elm_mapbox$Mapbox$Expression$ifElse,
+						A2(
+							gampleman$elm_mapbox$Mapbox$Expression$isEqual,
+							gampleman$elm_mapbox$Mapbox$Expression$str('Vienna'),
+							gampleman$elm_mapbox$Mapbox$Expression$getProperty(
+								gampleman$elm_mapbox$Mapbox$Expression$str('name_en'))),
+						gampleman$elm_mapbox$Mapbox$Expression$uppercase,
+						gampleman$elm_mapbox$Mapbox$Expression$none))
+				])),
+			A3(
+			gampleman$elm_mapbox$Mapbox$Layer$fill,
+			'changes',
+			'changes',
+			_List_fromArray(
+				[
+					gampleman$elm_mapbox$Mapbox$Layer$fillOpacity(
+					A3(
+						gampleman$elm_mapbox$Mapbox$Expression$ifElse,
+						gampleman$elm_mapbox$Mapbox$Expression$toBool(
+							gampleman$elm_mapbox$Mapbox$Expression$featureState(
+								gampleman$elm_mapbox$Mapbox$Expression$str('hover'))),
+						gampleman$elm_mapbox$Mapbox$Expression$float(0.9),
+						gampleman$elm_mapbox$Mapbox$Expression$float(0.1)))
+				]))
+		]);
+	return A2(
+		elm$html$Html$div,
+		_List_Nil,
+		_List_fromArray(
+			[
+				gampleman$elm_mapbox$Mapbox$Element$css,
+				A2(
+				elm$html$Html$div,
+				_List_fromArray(
+					[
+						A2(elm$html$Html$Attributes$style, 'width', '1280px'),
+						A2(elm$html$Html$Attributes$style, 'height', '720px')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						gampleman$elm_mapbox$Mapbox$Element$map,
+						_List_fromArray(
+							[
+								gampleman$elm_mapbox$Mapbox$Element$token('pk.eyJ1IjoieTA0N2FrYSIsImEiOiJjanlyZ3ZvNDUwYjJvM210a2F0bGV0dm82In0.gumWKg-JXwJQTFiF3S7KfQ'),
+								gampleman$elm_mapbox$Mapbox$Element$maxZoom(18),
+								gampleman$elm_mapbox$Mapbox$Element$onMouseMove(author$project$Custom$Mapbox$Hover),
+								gampleman$elm_mapbox$Mapbox$Element$onClick(author$project$Custom$Mapbox$Click),
+								gampleman$elm_mapbox$Mapbox$Element$id('my-map'),
+								gampleman$elm_mapbox$Mapbox$Element$eventFeaturesLayers(
+								_List_fromArray(
+									['changes'])),
+								author$project$Custom$Mapbox$hoveredFeatures(model.features)
+							]),
+						gampleman$elm_mapbox$Mapbox$Style$light),
+						A2(
+						elm$html$Html$div,
+						_List_fromArray(
+							[
+								A2(elm$html$Html$Attributes$style, 'position', 'absolute'),
+								A2(elm$html$Html$Attributes$style, 'bottom', '20px'),
+								A2(elm$html$Html$Attributes$style, 'left', '20px')
+							]),
+						_List_fromArray(
+							[
+								elm$html$Html$text(
+								gampleman$elm_mapbox$LngLat$toString(model.position))
+							]))
+					]))
+			]));
+};
 var elm$virtual_dom$VirtualDom$map = _VirtualDom_map;
 var elm$html$Html$map = elm$virtual_dom$VirtualDom$map;
 var author$project$Custom$view = function (model) {
-	var submodel = model.a;
-	return A2(
-		elm$html$Html$map,
-		author$project$Custom$LackMsg,
-		author$project$Custom$Lack$view(submodel));
+	if (model.$ === 'LackModel') {
+		var submodel = model.a;
+		return A2(
+			elm$html$Html$map,
+			author$project$Custom$LackMsg,
+			author$project$Custom$Lack$view(submodel));
+	} else {
+		var submodel = model.a;
+		return A2(
+			elm$html$Html$map,
+			author$project$Custom$MapboxMsg,
+			author$project$Custom$Mapbox$view(submodel));
+	}
 };
 var author$project$Formatting$slidePadding = '25px 100px';
 var w0rm$elm_slice_show$SliceShow$ContentData$Container = F3(
@@ -10923,8 +11991,6 @@ var author$project$Formatting$spacer = function (h) {
 			_List_Nil));
 };
 var elm$html$Html$span = _VirtualDom_node('span');
-var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
 var author$project$Formatting$text_ = function (txt) {
 	return w0rm$elm_slice_show$SliceShow$Content$item(
 		A2(
@@ -10938,7 +12004,6 @@ var author$project$Formatting$text_ = function (txt) {
 var elm$html$Html$br = _VirtualDom_node('br');
 var elm$html$Html$h1 = _VirtualDom_node('h1');
 var elm$html$Html$img = _VirtualDom_node('img');
-var elm$json$Json$Encode$string = _Json_wrap;
 var elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
 		return A2(
@@ -11138,6 +12203,24 @@ var author$project$Main$fin = _List_fromArray(
 				author$project$Formatting$text_('会場でステッカーを配布しています')
 			]))
 	]);
+var author$project$Custom$Mapbox$initial = function (_n0) {
+	var width = _n0.width;
+	var height = _n0.height;
+	return {
+		features: _List_Nil,
+		position: A2(gampleman$elm_mapbox$LngLat$LngLat, 0, 0)
+	};
+};
+var w0rm$elm_slice_show$SliceShow$ContentData$Custom = F2(
+	function (a, b) {
+		return {$: 'Custom', a: a, b: b};
+	});
+var w0rm$elm_slice_show$SliceShow$Content$custom = w0rm$elm_slice_show$SliceShow$ContentData$Custom(w0rm$elm_slice_show$SliceShow$State$Inactive);
+var author$project$Custom$mapbox = function (options) {
+	return w0rm$elm_slice_show$SliceShow$Content$custom(
+		author$project$Custom$MapboxModel(
+			author$project$Custom$Mapbox$initial(options)));
+};
 var author$project$Formatting$bullet = function (str) {
 	return w0rm$elm_slice_show$SliceShow$Content$item(
 		A2(
@@ -11150,22 +12233,96 @@ var author$project$Formatting$bullet = function (str) {
 };
 var author$project$Formatting$bullets = w0rm$elm_slice_show$SliceShow$Content$container(
 	elm$html$Html$ul(_List_Nil));
+var author$project$Formatting$group = F5(
+	function (left, top, width, height, content) {
+		return A2(
+			w0rm$elm_slice_show$SliceShow$Content$container,
+			elm$html$Html$div(
+				_List_fromArray(
+					[
+						A2(elm$html$Html$Attributes$style, 'position', 'absolute'),
+						A2(
+						elm$html$Html$Attributes$style,
+						'left',
+						elm$core$String$fromInt(left) + 'px'),
+						A2(
+						elm$html$Html$Attributes$style,
+						'top',
+						elm$core$String$fromInt(top) + 'px'),
+						A2(
+						elm$html$Html$Attributes$style,
+						'width',
+						elm$core$String$fromInt(width) + 'px'),
+						A2(
+						elm$html$Html$Attributes$style,
+						'height',
+						elm$core$String$fromInt(height) + 'px')
+					])),
+			content);
+	});
+var author$project$Formatting$noPointerEvents = function (content) {
+	return A2(
+		w0rm$elm_slice_show$SliceShow$Content$container,
+		elm$html$Html$div(
+			_List_fromArray(
+				[
+					A2(elm$html$Html$Attributes$style, 'pointer-events', 'none')
+				])),
+		_List_fromArray(
+			[content]));
+};
+var author$project$Formatting$position = F3(
+	function (left, top, content) {
+		return A2(
+			w0rm$elm_slice_show$SliceShow$Content$container,
+			elm$html$Html$div(
+				_List_fromArray(
+					[
+						A2(elm$html$Html$Attributes$style, 'position', 'absolute'),
+						A2(
+						elm$html$Html$Attributes$style,
+						'left',
+						elm$core$String$fromInt(left) + 'px'),
+						A2(
+						elm$html$Html$Attributes$style,
+						'top',
+						elm$core$String$fromInt(top) + 'px')
+					])),
+			_List_fromArray(
+				[content]));
+	});
 var author$project$Main$gampleman_mapbox = _List_fromArray(
 	[
 		A3(
 		author$project$Formatting$colored,
 		'#F6F6F6',
-		'hsl(40, 60%, 45%)',
+		'hsla(220, 0%, 0%, 0.5)',
 		_List_fromArray(
 			[
-				author$project$Formatting$title('gampleman/elm-mapbox'),
-				author$project$Formatting$bullets(
-				_List_fromArray(
-					[
-						author$project$Formatting$bullet('Ports を使う（npmで配布されている）'),
-						author$project$Formatting$bullet('Mapbox GL JS をラップしている'),
-						author$project$Formatting$bullet('バイナリベクトルタイルに対応している！')
-					]))
+				A3(
+				author$project$Formatting$position,
+				0,
+				0,
+				author$project$Custom$mapbox(
+					{height: 720, width: 1280})),
+				author$project$Formatting$noPointerEvents(
+				A5(
+					author$project$Formatting$group,
+					100,
+					25,
+					1100,
+					280,
+					_List_fromArray(
+						[
+							author$project$Formatting$title('gampleman/elm-mapbox'),
+							author$project$Formatting$bullets(
+							_List_fromArray(
+								[
+									author$project$Formatting$bullet('Ports を使う（npmで配布されている）'),
+									author$project$Formatting$bullet('Mapbox GL JS をラップしている'),
+									author$project$Formatting$bullet('バイナリベクトルタイルに対応している！')
+								]))
+						])))
 			]))
 	]);
 var author$project$Main$hope = _List_fromArray(
@@ -11598,17 +12755,6 @@ var author$project$Common$Meshes$moveBy = F2(
 			},
 			triangles);
 	});
-var elm$core$List$append = F2(
-	function (xs, ys) {
-		if (!ys.b) {
-			return xs;
-		} else {
-			return A3(elm$core$List$foldr, elm$core$List$cons, ys, xs);
-		}
-	});
-var elm$core$List$concat = function (lists) {
-	return A3(elm$core$List$foldr, elm$core$List$append, _List_Nil, lists);
-};
 var w0rm$elm_physics$Physics$Shape$moveBy = F2(
 	function (offset, _n0) {
 		var shape = _n0.a;
@@ -11812,74 +12958,11 @@ var author$project$Custom$Lack$initial = function (_n0) {
 		world: author$project$Custom$Lack$initialWorld
 	};
 };
-var w0rm$elm_slice_show$SliceShow$ContentData$Custom = F2(
-	function (a, b) {
-		return {$: 'Custom', a: a, b: b};
-	});
-var w0rm$elm_slice_show$SliceShow$Content$custom = w0rm$elm_slice_show$SliceShow$ContentData$Custom(w0rm$elm_slice_show$SliceShow$State$Inactive);
 var author$project$Custom$lack = function (options) {
 	return w0rm$elm_slice_show$SliceShow$Content$custom(
 		author$project$Custom$LackModel(
 			author$project$Custom$Lack$initial(options)));
 };
-var author$project$Formatting$group = F5(
-	function (left, top, width, height, content) {
-		return A2(
-			w0rm$elm_slice_show$SliceShow$Content$container,
-			elm$html$Html$div(
-				_List_fromArray(
-					[
-						A2(elm$html$Html$Attributes$style, 'position', 'absolute'),
-						A2(
-						elm$html$Html$Attributes$style,
-						'left',
-						elm$core$String$fromInt(left) + 'px'),
-						A2(
-						elm$html$Html$Attributes$style,
-						'top',
-						elm$core$String$fromInt(top) + 'px'),
-						A2(
-						elm$html$Html$Attributes$style,
-						'width',
-						elm$core$String$fromInt(width) + 'px'),
-						A2(
-						elm$html$Html$Attributes$style,
-						'height',
-						elm$core$String$fromInt(height) + 'px')
-					])),
-			content);
-	});
-var author$project$Formatting$noPointerEvents = function (content) {
-	return A2(
-		w0rm$elm_slice_show$SliceShow$Content$container,
-		elm$html$Html$div(
-			_List_fromArray(
-				[
-					A2(elm$html$Html$Attributes$style, 'pointer-events', 'none')
-				])),
-		_List_fromArray(
-			[content]));
-};
-var author$project$Formatting$position = F3(
-	function (left, top, content) {
-		return A2(
-			w0rm$elm_slice_show$SliceShow$Content$container,
-			elm$html$Html$div(
-				_List_fromArray(
-					[
-						A2(elm$html$Html$Attributes$style, 'position', 'absolute'),
-						A2(
-						elm$html$Html$Attributes$style,
-						'left',
-						elm$core$String$fromInt(left) + 'px'),
-						A2(
-						elm$html$Html$Attributes$style,
-						'top',
-						elm$core$String$fromInt(top) + 'px')
-					])),
-			_List_fromArray(
-				[content]));
-	});
 var author$project$Main$planning = _List_fromArray(
 	[
 		A3(
@@ -12159,7 +13242,6 @@ var author$project$Main$webGL = _List_fromArray(
 	]);
 var author$project$Main$slides = _List_fromArray(
 	[author$project$Main$notice, author$project$Main$cover, author$project$Main$selfIntroduce, author$project$Main$prologue, author$project$Main$jsLibraries, author$project$Main$ports, author$project$Main$hope, author$project$Main$weAreNeverEverGettingBackTogether, author$project$Main$elmPackages, author$project$Main$visualization, author$project$Main$jackhp95_mapbox, author$project$Main$gampleman_mapbox, author$project$Main$webGL, author$project$Main$planning, author$project$Main$fin]);
-var elm$core$Platform$Sub$none = elm$core$Platform$Sub$batch(_List_Nil);
 var w0rm$elm_slice_show$SliceShow$Model$init = F2(
 	function (slides, key) {
 		return {currentSlide: elm$core$Maybe$Nothing, height: 0, key: key, slides: slides, width: 0};
@@ -12801,7 +13883,6 @@ var elm$html$Html$Events$custom = F2(
 var w0rm$elm_slice_show$SliceShow$Messages$Goto = function (a) {
 	return {$: 'Goto', a: a};
 };
-var elm$core$String$fromFloat = _String_fromNumber;
 var w0rm$elm_slice_show$SliceShow$View$fit = F4(
 	function (w1, h1, w2, h2) {
 		return (_Utils_cmp(w1 * h2, w2 * h1) < 0) ? (w1 / w2) : (h1 / h2);
