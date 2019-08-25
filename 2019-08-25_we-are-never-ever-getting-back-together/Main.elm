@@ -308,12 +308,16 @@ webGL : List Content
 webGL =
     [ colored "#F6F6F6"
         "hsl(40, 60%, 45%)"
-        [ title "elm-explorations/webgl"
-        , bullets
-            [ bullet "Three.js とは異なり、WebGL を直接操作する"
-            , bullet "Elmでここだけの [glsl | ... |] という記法がある"
-            , bullet "GLSLの知識が少し必要です"
-            ]
+        [ Custom.webgl { width = 1280, height = 720 } |> position 0 0
+        , [ title "elm-explorations/webgl"
+          , bullets
+                [ bullet "Three.js とは異なり、WebGL を直接操作する"
+                , bullet "Elmでここだけの [glsl | ... |] という記法がある"
+                , bullet "GLSLの知識が少し必要です"
+                ]
+          ]
+            |> group 100 25 1100 280
+            |> noPointerEvents
         ]
     ]
 

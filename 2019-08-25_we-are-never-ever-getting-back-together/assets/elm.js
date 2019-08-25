@@ -5986,6 +5986,9 @@ var author$project$Custom$LackMsg = function (a) {
 var author$project$Custom$MapboxMsg = function (a) {
 	return {$: 'MapboxMsg', a: a};
 };
+var author$project$Custom$WebGLMsg = function (a) {
+	return {$: 'WebGLMsg', a: a};
+};
 var elm$browser$Browser$AnimationManager$Delta = function (a) {
 	return {$: 'Delta', a: a};
 };
@@ -7350,20 +7353,63 @@ var elm$core$Platform$Sub$none = elm$core$Platform$Sub$batch(_List_Nil);
 var author$project$Custom$Mapbox$subscriptions = function (_n0) {
 	return elm$core$Platform$Sub$none;
 };
+var author$project$Custom$WebGL$MouseDown = function (a) {
+	return {$: 'MouseDown', a: a};
+};
+var author$project$Custom$WebGL$MouseMove = function (a) {
+	return {$: 'MouseMove', a: a};
+};
+var author$project$Custom$WebGL$MouseUp = function (a) {
+	return {$: 'MouseUp', a: a};
+};
+var author$project$Custom$WebGL$mousePosition = function (msg) {
+	return A3(
+		elm$json$Json$Decode$map2,
+		F2(
+			function (x, y) {
+				return msg(
+					{x: x, y: y});
+			}),
+		A2(elm$json$Json$Decode$field, 'pageX', elm$json$Json$Decode$int),
+		A2(elm$json$Json$Decode$field, 'pageY', elm$json$Json$Decode$int));
+};
+var elm$browser$Browser$Events$Document = {$: 'Document'};
+var elm$browser$Browser$Events$onMouseDown = A2(elm$browser$Browser$Events$on, elm$browser$Browser$Events$Document, 'mousedown');
+var elm$browser$Browser$Events$onMouseMove = A2(elm$browser$Browser$Events$on, elm$browser$Browser$Events$Document, 'mousemove');
+var elm$browser$Browser$Events$onMouseUp = A2(elm$browser$Browser$Events$on, elm$browser$Browser$Events$Document, 'mouseup');
+var author$project$Custom$WebGL$subscriptions = function (_n0) {
+	return elm$core$Platform$Sub$batch(
+		_List_fromArray(
+			[
+				elm$browser$Browser$Events$onMouseDown(
+				author$project$Custom$WebGL$mousePosition(author$project$Custom$WebGL$MouseDown)),
+				elm$browser$Browser$Events$onMouseUp(
+				author$project$Custom$WebGL$mousePosition(author$project$Custom$WebGL$MouseUp)),
+				elm$browser$Browser$Events$onMouseMove(
+				author$project$Custom$WebGL$mousePosition(author$project$Custom$WebGL$MouseMove))
+			]));
+};
 var elm$core$Platform$Sub$map = _Platform_map;
 var author$project$Custom$subscriptions = function (model) {
-	if (model.$ === 'LackModel') {
-		var submodel = model.a;
-		return A2(
-			elm$core$Platform$Sub$map,
-			author$project$Custom$LackMsg,
-			author$project$Custom$Lack$subscriptions(submodel));
-	} else {
-		var submodel = model.a;
-		return A2(
-			elm$core$Platform$Sub$map,
-			author$project$Custom$MapboxMsg,
-			author$project$Custom$Mapbox$subscriptions(submodel));
+	switch (model.$) {
+		case 'LackModel':
+			var submodel = model.a;
+			return A2(
+				elm$core$Platform$Sub$map,
+				author$project$Custom$LackMsg,
+				author$project$Custom$Lack$subscriptions(submodel));
+		case 'MapboxModel':
+			var submodel = model.a;
+			return A2(
+				elm$core$Platform$Sub$map,
+				author$project$Custom$MapboxMsg,
+				author$project$Custom$Mapbox$subscriptions(submodel));
+		default:
+			var submodel = model.a;
+			return A2(
+				elm$core$Platform$Sub$map,
+				author$project$Custom$WebGLMsg,
+				author$project$Custom$WebGL$subscriptions(submodel));
 	}
 };
 var author$project$Custom$LackModel = function (a) {
@@ -7371,6 +7417,9 @@ var author$project$Custom$LackModel = function (a) {
 };
 var author$project$Custom$MapboxModel = function (a) {
 	return {$: 'MapboxModel', a: a};
+};
+var author$project$Custom$WebGLModel = function (a) {
+	return {$: 'WebGLModel', a: a};
 };
 var elm$browser$Browser$Dom$getViewport = _Browser_withWindow(_Browser_getViewport);
 var author$project$Common$Events$measureSize = function (fn) {
@@ -10289,38 +10338,294 @@ var author$project$Custom$Mapbox$update = F2(
 							lngLat))));
 		}
 	});
+var author$project$Custom$WebGL$mouseDown = F2(
+	function (_n0, m) {
+		var x = _n0.x;
+		var y = _n0.y;
+		return _Utils_update(
+			m,
+			{
+				mouseStatus: {pressed: true, x: x, y: y}
+			});
+	});
+var elm$core$Basics$degrees = function (angleInDegrees) {
+	return (angleInDegrees * elm$core$Basics$pi) / 180;
+};
+var author$project$Custom$WebGL$mouseMove = F2(
+	function (_n0, m) {
+		var x = _n0.x;
+		var y = _n0.y;
+		var _n1 = m.mouseStatus.pressed;
+		if (!_n1) {
+			return m;
+		} else {
+			return _Utils_update(
+				m,
+				{
+					mouseStatus: {pressed: true, x: x, y: y},
+					thetaX: m.thetaX + elm$core$Basics$degrees(x - m.mouseStatus.x),
+					thetaY: m.thetaY + elm$core$Basics$degrees(y - m.mouseStatus.y)
+				});
+		}
+	});
+var author$project$Custom$WebGL$mouseUp = F2(
+	function (_n0, m) {
+		var x = _n0.x;
+		var y = _n0.y;
+		return _Utils_update(
+			m,
+			{
+				mouseStatus: {pressed: false, x: 0, y: 0}
+			});
+	});
+var elm$core$Maybe$map3 = F4(
+	function (func, ma, mb, mc) {
+		if (ma.$ === 'Nothing') {
+			return elm$core$Maybe$Nothing;
+		} else {
+			var a = ma.a;
+			if (mb.$ === 'Nothing') {
+				return elm$core$Maybe$Nothing;
+			} else {
+				var b = mb.a;
+				if (mc.$ === 'Nothing') {
+					return elm$core$Maybe$Nothing;
+				} else {
+					var c = mc.a;
+					return elm$core$Maybe$Just(
+						A3(func, a, b, c));
+				}
+			}
+		}
+	});
+var elm$core$Maybe$withDefault = F2(
+	function (_default, maybe) {
+		if (maybe.$ === 'Just') {
+			var value = maybe.a;
+			return value;
+		} else {
+			return _default;
+		}
+	});
+var elm$core$String$toFloat = _String_toFloat;
+var author$project$Custom$WebGL$parse = F2(
+	function (_default, text) {
+		return A2(
+			elm$core$Maybe$withDefault,
+			_default,
+			A4(
+				elm$core$Maybe$map3,
+				elm_explorations$linear_algebra$Math$Vector3$vec3,
+				elm$core$String$toFloat(text.x),
+				elm$core$String$toFloat(text.y),
+				elm$core$String$toFloat(text.z)));
+	});
+var author$project$Custom$WebGL$updateAndParseX = F3(
+	function (_default, textual, value) {
+		var text = _Utils_update(
+			textual,
+			{x: value});
+		return _Utils_Tuple2(
+			A2(author$project$Custom$WebGL$parse, _default, text),
+			text);
+	});
+var author$project$Custom$WebGL$updateAndParseY = F3(
+	function (_default, textual, value) {
+		var text = _Utils_update(
+			textual,
+			{y: value});
+		return _Utils_Tuple2(
+			A2(author$project$Custom$WebGL$parse, _default, text),
+			text);
+	});
+var author$project$Custom$WebGL$updateAndParseZ = F3(
+	function (_default, textual, value) {
+		var text = _Utils_update(
+			textual,
+			{z: value});
+		return _Utils_Tuple2(
+			A2(author$project$Custom$WebGL$parse, _default, text),
+			text);
+	});
+var elm$core$Result$toMaybe = function (result) {
+	if (result.$ === 'Ok') {
+		var v = result.a;
+		return elm$core$Maybe$Just(v);
+	} else {
+		return elm$core$Maybe$Nothing;
+	}
+};
+var author$project$Custom$WebGL$update = F2(
+	function (msg, model) {
+		switch (msg.$) {
+			case 'TextureLoaded':
+				var texture = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							texture: elm$core$Result$toMaybe(texture)
+						}),
+					elm$core$Platform$Cmd$none);
+			case 'MouseDown':
+				var pos = msg.a;
+				return _Utils_Tuple2(
+					A2(author$project$Custom$WebGL$mouseDown, pos, model),
+					elm$core$Platform$Cmd$none);
+			case 'MouseMove':
+				var pos = msg.a;
+				return _Utils_Tuple2(
+					A2(author$project$Custom$WebGL$mouseMove, pos, model),
+					elm$core$Platform$Cmd$none);
+			case 'MouseUp':
+				var pos = msg.a;
+				return _Utils_Tuple2(
+					A2(author$project$Custom$WebGL$mouseUp, pos, model),
+					elm$core$Platform$Cmd$none);
+			case 'UseLighting':
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{lighting: !model.lighting}),
+					elm$core$Platform$Cmd$none);
+			case 'ChangeDirectionalX':
+				var value = msg.a;
+				var _n1 = A3(author$project$Custom$WebGL$updateAndParseX, model.directional, model.directionalText, value);
+				var numeric = _n1.a;
+				var textual = _n1.b;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{directional: numeric, directionalText: textual}),
+					elm$core$Platform$Cmd$none);
+			case 'ChangeDirectionalY':
+				var value = msg.a;
+				var _n2 = A3(author$project$Custom$WebGL$updateAndParseY, model.directional, model.directionalText, value);
+				var numeric = _n2.a;
+				var textual = _n2.b;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{directional: numeric, directionalText: textual}),
+					elm$core$Platform$Cmd$none);
+			case 'ChangeDirectionalZ':
+				var value = msg.a;
+				var _n3 = A3(author$project$Custom$WebGL$updateAndParseZ, model.directional, model.directionalText, value);
+				var numeric = _n3.a;
+				var textual = _n3.b;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{directional: numeric, directionalText: textual}),
+					elm$core$Platform$Cmd$none);
+			case 'ChangeDirectionalColourR':
+				var value = msg.a;
+				var _n4 = A3(author$project$Custom$WebGL$updateAndParseX, model.directionalColour, model.directionalColourText, value);
+				var numeric = _n4.a;
+				var textual = _n4.b;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{directionalColour: numeric, directionalColourText: textual}),
+					elm$core$Platform$Cmd$none);
+			case 'ChangeDirectionalColourG':
+				var value = msg.a;
+				var _n5 = A3(author$project$Custom$WebGL$updateAndParseY, model.directionalColour, model.directionalColourText, value);
+				var numeric = _n5.a;
+				var textual = _n5.b;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{directionalColour: numeric, directionalColourText: textual}),
+					elm$core$Platform$Cmd$none);
+			case 'ChangeDirectionalColourB':
+				var value = msg.a;
+				var _n6 = A3(author$project$Custom$WebGL$updateAndParseZ, model.directionalColour, model.directionalColourText, value);
+				var numeric = _n6.a;
+				var textual = _n6.b;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{directionalColour: numeric, directionalColourText: textual}),
+					elm$core$Platform$Cmd$none);
+			case 'ChangeAmbientColourR':
+				var value = msg.a;
+				var _n7 = A3(author$project$Custom$WebGL$updateAndParseX, model.ambientColour, model.ambientColourText, value);
+				var numeric = _n7.a;
+				var textual = _n7.b;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{ambientColour: numeric, ambientColourText: textual}),
+					elm$core$Platform$Cmd$none);
+			case 'ChangeAmbientColourG':
+				var value = msg.a;
+				var _n8 = A3(author$project$Custom$WebGL$updateAndParseY, model.ambientColour, model.ambientColourText, value);
+				var numeric = _n8.a;
+				var textual = _n8.b;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{ambientColour: numeric, ambientColourText: textual}),
+					elm$core$Platform$Cmd$none);
+			default:
+				var value = msg.a;
+				var _n9 = A3(author$project$Custom$WebGL$updateAndParseZ, model.ambientColour, model.ambientColourText, value);
+				var numeric = _n9.a;
+				var textual = _n9.b;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{ambientColour: numeric, ambientColourText: textual}),
+					elm$core$Platform$Cmd$none);
+		}
+	});
 var elm$core$Platform$Cmd$map = _Platform_map;
 var author$project$Custom$update = F2(
 	function (action, model) {
 		var _n0 = _Utils_Tuple2(action, model);
-		_n0$2:
+		_n0$3:
 		while (true) {
-			if (_n0.a.$ === 'LackMsg') {
-				if (_n0.b.$ === 'LackModel') {
-					var a = _n0.a.a;
-					var m = _n0.b.a;
-					var _n1 = A2(author$project$Custom$Lack$update, a, m);
-					var newModel = _n1.a;
-					var newCmd = _n1.b;
-					return _Utils_Tuple2(
-						author$project$Custom$LackModel(newModel),
-						A2(elm$core$Platform$Cmd$map, author$project$Custom$LackMsg, newCmd));
-				} else {
-					break _n0$2;
-				}
-			} else {
-				if (_n0.b.$ === 'MapboxModel') {
-					var a = _n0.a.a;
-					var m = _n0.b.a;
-					var _n2 = A2(author$project$Custom$Mapbox$update, a, m);
-					var newModel = _n2.a;
-					var newCmd = _n2.b;
-					return _Utils_Tuple2(
-						author$project$Custom$MapboxModel(newModel),
-						A2(elm$core$Platform$Cmd$map, author$project$Custom$MapboxMsg, newCmd));
-				} else {
-					break _n0$2;
-				}
+			switch (_n0.a.$) {
+				case 'LackMsg':
+					if (_n0.b.$ === 'LackModel') {
+						var a = _n0.a.a;
+						var m = _n0.b.a;
+						var _n1 = A2(author$project$Custom$Lack$update, a, m);
+						var newModel = _n1.a;
+						var newCmd = _n1.b;
+						return _Utils_Tuple2(
+							author$project$Custom$LackModel(newModel),
+							A2(elm$core$Platform$Cmd$map, author$project$Custom$LackMsg, newCmd));
+					} else {
+						break _n0$3;
+					}
+				case 'MapboxMsg':
+					if (_n0.b.$ === 'MapboxModel') {
+						var a = _n0.a.a;
+						var m = _n0.b.a;
+						var _n2 = A2(author$project$Custom$Mapbox$update, a, m);
+						var newModel = _n2.a;
+						var newCmd = _n2.b;
+						return _Utils_Tuple2(
+							author$project$Custom$MapboxModel(newModel),
+							A2(elm$core$Platform$Cmd$map, author$project$Custom$MapboxMsg, newCmd));
+					} else {
+						break _n0$3;
+					}
+				default:
+					if (_n0.b.$ === 'WebGLModel') {
+						var a = _n0.a.a;
+						var m = _n0.b.a;
+						var _n3 = A2(author$project$Custom$WebGL$update, a, m);
+						var newModel = _n3.a;
+						var newCmd = _n3.b;
+						return _Utils_Tuple2(
+							author$project$Custom$WebGLModel(newModel),
+							A2(elm$core$Platform$Cmd$map, author$project$Custom$WebGLMsg, newCmd));
+					} else {
+						break _n0$3;
+					}
 			}
 		}
 		return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
@@ -10349,15 +10654,6 @@ var author$project$Common$Camera$transform4 = F2(
 				elm_explorations$linear_algebra$Math$Vector4$dot,
 				A4(elm_explorations$linear_algebra$Math$Vector4$vec4, r.m41, r.m42, r.m43, r.m44),
 				v));
-	});
-var elm$core$Maybe$withDefault = F2(
-	function (_default, maybe) {
-		if (maybe.$ === 'Just') {
-			var value = maybe.a;
-			return value;
-		} else {
-			return _default;
-		}
 	});
 var elm_explorations$linear_algebra$Math$Matrix4$identity = _MJS_m4x4identity;
 var elm_explorations$linear_algebra$Math$Matrix4$inverse = _MJS_m4x4inverse;
@@ -11935,21 +12231,489 @@ var author$project$Custom$Mapbox$view = function (model) {
 					]))
 			]));
 };
+var author$project$Custom$WebGL$ChangeAmbientColourB = function (a) {
+	return {$: 'ChangeAmbientColourB', a: a};
+};
+var author$project$Custom$WebGL$ChangeAmbientColourG = function (a) {
+	return {$: 'ChangeAmbientColourG', a: a};
+};
+var author$project$Custom$WebGL$ChangeAmbientColourR = function (a) {
+	return {$: 'ChangeAmbientColourR', a: a};
+};
+var author$project$Custom$WebGL$ChangeDirectionalColourB = function (a) {
+	return {$: 'ChangeDirectionalColourB', a: a};
+};
+var author$project$Custom$WebGL$ChangeDirectionalColourG = function (a) {
+	return {$: 'ChangeDirectionalColourG', a: a};
+};
+var author$project$Custom$WebGL$ChangeDirectionalColourR = function (a) {
+	return {$: 'ChangeDirectionalColourR', a: a};
+};
+var author$project$Custom$WebGL$ChangeDirectionalX = function (a) {
+	return {$: 'ChangeDirectionalX', a: a};
+};
+var author$project$Custom$WebGL$ChangeDirectionalY = function (a) {
+	return {$: 'ChangeDirectionalY', a: a};
+};
+var author$project$Custom$WebGL$ChangeDirectionalZ = function (a) {
+	return {$: 'ChangeDirectionalZ', a: a};
+};
+var author$project$Custom$WebGL$UseLighting = {$: 'UseLighting'};
+var author$project$Custom$WebGL$message = 'Move the Moon dragging the mouse';
+var author$project$Custom$WebGL$fragmentShader = {
+	src: '\n  precision mediump float;\n  uniform sampler2D texture;\n  varying vec2 vcoord;\n  varying vec3 lightWeighting;\n  void main () {\n      vec4 textureColor = texture2D(texture, vec2(vcoord.s, vcoord.t));\n      gl_FragColor = vec4(textureColor.rgb * lightWeighting, textureColor.a);\n  }\n',
+	attributes: {},
+	uniforms: {texture: 'texture'}
+};
+var elm_explorations$linear_algebra$Math$Matrix4$makeLookAt = _MJS_m4x4makeLookAt;
+var elm_explorations$linear_algebra$Math$Matrix4$makePerspective = _MJS_m4x4makePerspective;
+var elm_explorations$linear_algebra$Math$Matrix4$rotate = _MJS_m4x4rotate;
+var elm_explorations$linear_algebra$Math$Matrix4$transpose = _MJS_m4x4transpose;
+var author$project$Custom$WebGL$uniformsShpere = F8(
+	function (tx, ty, texture, displacement, lighting, directionalColour, directional, ambientColour) {
+		var worldSpace = A3(
+			elm_explorations$linear_algebra$Math$Matrix4$rotate,
+			tx,
+			A3(elm_explorations$linear_algebra$Math$Vector3$vec3, 0, 1, 0),
+			A3(
+				elm_explorations$linear_algebra$Math$Matrix4$rotate,
+				ty,
+				A3(elm_explorations$linear_algebra$Math$Vector3$vec3, 1, 0, 0),
+				elm_explorations$linear_algebra$Math$Matrix4$makeTranslate(displacement)));
+		var perspective = A4(elm_explorations$linear_algebra$Math$Matrix4$makePerspective, 45, 1, 0.1, 100);
+		var camera = A3(
+			elm_explorations$linear_algebra$Math$Matrix4$makeLookAt,
+			A3(elm_explorations$linear_algebra$Math$Vector3$vec3, 0, 0, 0),
+			A3(elm_explorations$linear_algebra$Math$Vector3$vec3, 0, 0, -4),
+			A3(elm_explorations$linear_algebra$Math$Vector3$vec3, 0, 1, 0));
+		return {
+			ambientColour: ambientColour,
+			camera: camera,
+			directional: directional,
+			directionalColour: directionalColour,
+			lighting: lighting,
+			normalMatrix: elm_explorations$linear_algebra$Math$Matrix4$transpose(
+				elm_explorations$linear_algebra$Math$Matrix4$inverseOrthonormal(
+					A2(elm_explorations$linear_algebra$Math$Matrix4$mul, worldSpace, camera))),
+			perspective: perspective,
+			texture: texture,
+			worldSpace: worldSpace
+		};
+	});
+var author$project$Custom$WebGL$vertexShader = {
+	src: '\n  precision mediump float;\n  attribute vec3 position;\n  attribute vec3 coord;\n  attribute vec3 norm;\n  uniform mat4 worldSpace;\n  uniform mat4 perspective;\n  uniform mat4 normalMatrix;\n  uniform mat4 camera;\n  uniform bool lighting;\n  uniform vec3 directionalColour;\n  uniform vec3 directional;\n  uniform vec3 ambientColour;\n  varying vec2 vcoord;\n  varying vec3 lightWeighting;\n  void main() {\n    gl_Position = perspective * camera * worldSpace * vec4(position, 1.0);\n    vcoord = coord.xy;\n    if (!lighting) {\n      lightWeighting = vec3(1.0, 1.0, 1.0);\n    } else {\n      vec4 transformedNormal = normalMatrix * vec4(norm, 0.0);\n      float directionalLightWeighting = max(dot(transformedNormal, vec4(directional, 0)), 0.0);\n      lightWeighting = ambientColour + directionalColour * directionalLightWeighting;\n    }\n  }\n',
+	attributes: {coord: 'coord', norm: 'norm', position: 'position'},
+	uniforms: {ambientColour: 'ambientColour', camera: 'camera', directional: 'directional', directionalColour: 'directionalColour', normalMatrix: 'normalMatrix', perspective: 'perspective', worldSpace: 'worldSpace'}
+};
+var author$project$Custom$WebGL$renderEntity = F9(
+	function (mesh, thetaX, thetaY, texture, position, lighting, directionalColour, directional, ambientColour) {
+		if (texture.$ === 'Nothing') {
+			return _List_Nil;
+		} else {
+			var tex = texture.a;
+			return _List_fromArray(
+				[
+					A4(
+					elm_explorations$webgl$WebGL$entity,
+					author$project$Custom$WebGL$vertexShader,
+					author$project$Custom$WebGL$fragmentShader,
+					mesh,
+					A8(author$project$Custom$WebGL$uniformsShpere, thetaX, thetaY, tex, position, lighting, directionalColour, directional, ambientColour))
+				]);
+		}
+	});
+var author$project$Custom$WebGL$numSegments = 30;
+var elm$core$Basics$sin = _Basics_sin;
+var author$project$Custom$WebGL$face = F5(
+	function (latitude1, latitude2, longitude1, longitude2, radius) {
+		var theta2 = elm$core$Basics$degrees(180 * latitude2);
+		var theta1 = elm$core$Basics$degrees(180 * latitude1);
+		var phi2 = elm$core$Basics$degrees(360 * longitude2);
+		var topRight = {
+			coord: A3(elm_explorations$linear_algebra$Math$Vector3$vec3, longitude2 - 0.5, latitude2 - 0.5, 0),
+			norm: A3(
+				elm_explorations$linear_algebra$Math$Vector3$vec3,
+				elm$core$Basics$cos(theta2) * elm$core$Basics$sin(phi2),
+				elm$core$Basics$sin(theta2),
+				elm$core$Basics$cos(theta2) * elm$core$Basics$cos(phi2)),
+			position: A3(
+				elm_explorations$linear_algebra$Math$Vector3$vec3,
+				(elm$core$Basics$cos(theta2) * elm$core$Basics$sin(phi2)) * radius,
+				elm$core$Basics$sin(theta2) * radius,
+				(elm$core$Basics$cos(theta2) * elm$core$Basics$cos(phi2)) * radius)
+		};
+		var phi1 = elm$core$Basics$degrees(360 * longitude1);
+		var topLeft = {
+			coord: A3(elm_explorations$linear_algebra$Math$Vector3$vec3, longitude1 - 0.5, latitude2 - 0.5, 0),
+			norm: A3(
+				elm_explorations$linear_algebra$Math$Vector3$vec3,
+				elm$core$Basics$cos(theta2) * elm$core$Basics$sin(phi1),
+				elm$core$Basics$sin(theta2),
+				elm$core$Basics$cos(theta2) * elm$core$Basics$cos(phi1)),
+			position: A3(
+				elm_explorations$linear_algebra$Math$Vector3$vec3,
+				(elm$core$Basics$cos(theta2) * elm$core$Basics$sin(phi1)) * radius,
+				elm$core$Basics$sin(theta2) * radius,
+				(elm$core$Basics$cos(theta2) * elm$core$Basics$cos(phi1)) * radius)
+		};
+		var bottomRight = {
+			coord: A3(elm_explorations$linear_algebra$Math$Vector3$vec3, longitude2 - 0.5, latitude1 - 0.5, 0),
+			norm: A3(
+				elm_explorations$linear_algebra$Math$Vector3$vec3,
+				elm$core$Basics$cos(theta1) * elm$core$Basics$sin(phi2),
+				elm$core$Basics$sin(theta1),
+				elm$core$Basics$cos(theta1) * elm$core$Basics$cos(phi2)),
+			position: A3(
+				elm_explorations$linear_algebra$Math$Vector3$vec3,
+				(elm$core$Basics$cos(theta1) * elm$core$Basics$sin(phi2)) * radius,
+				elm$core$Basics$sin(theta1) * radius,
+				(elm$core$Basics$cos(theta1) * elm$core$Basics$cos(phi2)) * radius)
+		};
+		var bottomLeft = {
+			coord: A3(elm_explorations$linear_algebra$Math$Vector3$vec3, longitude1 - 0.5, latitude1 - 0.5, 0),
+			norm: A3(
+				elm_explorations$linear_algebra$Math$Vector3$vec3,
+				elm$core$Basics$cos(theta1) * elm$core$Basics$sin(phi1),
+				elm$core$Basics$sin(theta1),
+				elm$core$Basics$cos(theta1) * elm$core$Basics$cos(phi1)),
+			position: A3(
+				elm_explorations$linear_algebra$Math$Vector3$vec3,
+				(elm$core$Basics$cos(theta1) * elm$core$Basics$sin(phi1)) * radius,
+				elm$core$Basics$sin(theta1) * radius,
+				(elm$core$Basics$cos(theta1) * elm$core$Basics$cos(phi1)) * radius)
+		};
+		return _List_fromArray(
+			[
+				_Utils_Tuple3(topLeft, topRight, bottomLeft),
+				_Utils_Tuple3(bottomLeft, topRight, bottomRight)
+			]);
+	});
+var author$project$Custom$WebGL$ring = F4(
+	function (latitude1, latitude2, segments, radius) {
+		var longitudes = A2(
+			elm$core$List$map,
+			function (idx) {
+				return _Utils_Tuple2(idx / segments, (idx + 1) / segments);
+			},
+			A2(
+				elm$core$List$range,
+				0,
+				elm$core$Basics$round(segments) - 1));
+		return A2(
+			elm$core$List$concatMap,
+			function (_n0) {
+				var longitude1 = _n0.a;
+				var longitude2 = _n0.b;
+				return A5(author$project$Custom$WebGL$face, latitude1, latitude2, longitude1, longitude2, radius);
+			},
+			longitudes);
+	});
+var author$project$Custom$WebGL$sphere = function () {
+	var latitudes = A2(
+		elm$core$List$map,
+		function (idx) {
+			return _Utils_Tuple2(idx / author$project$Custom$WebGL$numSegments, (idx + 1) / author$project$Custom$WebGL$numSegments);
+		},
+		A2(
+			elm$core$List$range,
+			((-elm$core$Basics$round(author$project$Custom$WebGL$numSegments)) / 2) | 0,
+			((elm$core$Basics$round(author$project$Custom$WebGL$numSegments) / 2) | 0) - 1));
+	return elm_explorations$webgl$WebGL$triangles(
+		A2(
+			elm$core$List$concatMap,
+			function (_n0) {
+				var lat1 = _n0.a;
+				var lat2 = _n0.b;
+				return A4(author$project$Custom$WebGL$ring, lat1, lat2, author$project$Custom$WebGL$numSegments, 1);
+			},
+			latitudes));
+}();
+var elm$html$Html$h2 = _VirtualDom_node('h2');
+var elm$html$Html$input = _VirtualDom_node('input');
+var elm$html$Html$Attributes$boolProperty = F2(
+	function (key, bool) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			elm$json$Json$Encode$bool(bool));
+	});
+var elm$html$Html$Attributes$checked = elm$html$Html$Attributes$boolProperty('checked');
+var elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			elm$json$Json$Encode$string(string));
+	});
+var elm$html$Html$Attributes$step = function (n) {
+	return A2(elm$html$Html$Attributes$stringProperty, 'step', n);
+};
+var elm$html$Html$Attributes$type_ = elm$html$Html$Attributes$stringProperty('type');
+var elm$html$Html$Attributes$value = elm$html$Html$Attributes$stringProperty('value');
+var elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		elm$html$Html$Events$on,
+		'click',
+		elm$json$Json$Decode$succeed(msg));
+};
+var elm$html$Html$Events$alwaysStop = function (x) {
+	return _Utils_Tuple2(x, true);
+};
+var elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
+	return {$: 'MayStopPropagation', a: a};
+};
+var elm$html$Html$Events$stopPropagationOn = F2(
+	function (event, decoder) {
+		return A2(
+			elm$virtual_dom$VirtualDom$on,
+			event,
+			elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
+	});
+var elm$json$Json$Decode$at = F2(
+	function (fields, decoder) {
+		return A3(elm$core$List$foldr, elm$json$Json$Decode$field, decoder, fields);
+	});
+var elm$json$Json$Decode$string = _Json_decodeString;
+var elm$html$Html$Events$targetValue = A2(
+	elm$json$Json$Decode$at,
+	_List_fromArray(
+		['target', 'value']),
+	elm$json$Json$Decode$string);
+var elm$html$Html$Events$onInput = function (tagger) {
+	return A2(
+		elm$html$Html$Events$stopPropagationOn,
+		'input',
+		A2(
+			elm$json$Json$Decode$map,
+			elm$html$Html$Events$alwaysStop,
+			A2(elm$json$Json$Decode$map, tagger, elm$html$Html$Events$targetValue)));
+};
+var elm_explorations$webgl$WebGL$toHtml = elm_explorations$webgl$WebGL$toHtmlWith(
+	_List_fromArray(
+		[
+			elm_explorations$webgl$WebGL$alpha(true),
+			elm_explorations$webgl$WebGL$antialias,
+			elm_explorations$webgl$WebGL$depth(1)
+		]));
+var author$project$Custom$WebGL$view = function (_n0) {
+	var texture = _n0.texture;
+	var thetaX = _n0.thetaX;
+	var thetaY = _n0.thetaY;
+	var position = _n0.position;
+	var lighting = _n0.lighting;
+	var directionalColour = _n0.directionalColour;
+	var directional = _n0.directional;
+	var ambientColour = _n0.ambientColour;
+	var directionalColourText = _n0.directionalColourText;
+	var ambientColourText = _n0.ambientColourText;
+	var directionalText = _n0.directionalText;
+	var entities = A9(author$project$Custom$WebGL$renderEntity, author$project$Custom$WebGL$sphere, thetaX, thetaY, texture, position, lighting, directionalColour, directional, ambientColour);
+	return A2(
+		elm$html$Html$div,
+		_List_Nil,
+		_List_fromArray(
+			[
+				A2(
+				elm_explorations$webgl$WebGL$toHtml,
+				_List_fromArray(
+					[
+						elm$html$Html$Attributes$width(1280),
+						elm$html$Html$Attributes$height(720),
+						A2(elm$html$Html$Attributes$style, 'background', 'black')
+					]),
+				entities),
+				A2(
+				elm$html$Html$div,
+				_List_fromArray(
+					[
+						A2(elm$html$Html$Attributes$style, 'left', '20px'),
+						A2(elm$html$Html$Attributes$style, 'right', '20px'),
+						A2(elm$html$Html$Attributes$style, 'top', '500px')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$div,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A2(
+								elm$html$Html$input,
+								_List_fromArray(
+									[
+										elm$html$Html$Attributes$type_('checkbox'),
+										elm$html$Html$Events$onClick(author$project$Custom$WebGL$UseLighting),
+										elm$html$Html$Attributes$checked(lighting)
+									]),
+								_List_Nil),
+								elm$html$Html$text(' Use lighting')
+							])),
+						A2(
+						elm$html$Html$div,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A2(
+								elm$html$Html$h2,
+								_List_Nil,
+								_List_fromArray(
+									[
+										elm$html$Html$text('Directional Light')
+									])),
+								A2(
+								elm$html$Html$div,
+								_List_Nil,
+								_List_fromArray(
+									[
+										elm$html$Html$text('Direction: '),
+										elm$html$Html$text(' x: '),
+										A2(
+										elm$html$Html$input,
+										_List_fromArray(
+											[
+												elm$html$Html$Attributes$type_('text'),
+												elm$html$Html$Attributes$step('0.01'),
+												elm$html$Html$Events$onInput(author$project$Custom$WebGL$ChangeDirectionalX),
+												elm$html$Html$Attributes$value(directionalText.x)
+											]),
+										_List_Nil),
+										elm$html$Html$text(' y: '),
+										A2(
+										elm$html$Html$input,
+										_List_fromArray(
+											[
+												elm$html$Html$Attributes$type_('text'),
+												elm$html$Html$Attributes$step('0.01'),
+												elm$html$Html$Events$onInput(author$project$Custom$WebGL$ChangeDirectionalY),
+												elm$html$Html$Attributes$value(directionalText.y)
+											]),
+										_List_Nil),
+										elm$html$Html$text(' z: '),
+										A2(
+										elm$html$Html$input,
+										_List_fromArray(
+											[
+												elm$html$Html$Attributes$type_('text'),
+												elm$html$Html$Attributes$step('0.01'),
+												elm$html$Html$Events$onInput(author$project$Custom$WebGL$ChangeDirectionalZ),
+												elm$html$Html$Attributes$value(directionalText.z)
+											]),
+										_List_Nil)
+									])),
+								A2(
+								elm$html$Html$div,
+								_List_Nil,
+								_List_fromArray(
+									[
+										elm$html$Html$text('Colour: '),
+										elm$html$Html$text(' R: '),
+										A2(
+										elm$html$Html$input,
+										_List_fromArray(
+											[
+												elm$html$Html$Attributes$type_('text'),
+												elm$html$Html$Attributes$step('0.01'),
+												elm$html$Html$Events$onInput(author$project$Custom$WebGL$ChangeDirectionalColourR),
+												elm$html$Html$Attributes$value(directionalColourText.x)
+											]),
+										_List_Nil),
+										elm$html$Html$text(' G: '),
+										A2(
+										elm$html$Html$input,
+										_List_fromArray(
+											[
+												elm$html$Html$Attributes$type_('text'),
+												elm$html$Html$Attributes$step('0.01'),
+												elm$html$Html$Events$onInput(author$project$Custom$WebGL$ChangeDirectionalColourG),
+												elm$html$Html$Attributes$value(directionalColourText.y)
+											]),
+										_List_Nil),
+										elm$html$Html$text(' B: '),
+										A2(
+										elm$html$Html$input,
+										_List_fromArray(
+											[
+												elm$html$Html$Attributes$type_('text'),
+												elm$html$Html$Attributes$step('0.01'),
+												elm$html$Html$Events$onInput(author$project$Custom$WebGL$ChangeDirectionalColourB),
+												elm$html$Html$Attributes$value(directionalColourText.z)
+											]),
+										_List_Nil)
+									])),
+								A2(
+								elm$html$Html$h2,
+								_List_Nil,
+								_List_fromArray(
+									[
+										elm$html$Html$text('Ambient Light')
+									])),
+								A2(
+								elm$html$Html$div,
+								_List_Nil,
+								_List_fromArray(
+									[
+										elm$html$Html$text('Colour: '),
+										elm$html$Html$text(' R: '),
+										A2(
+										elm$html$Html$input,
+										_List_fromArray(
+											[
+												elm$html$Html$Attributes$type_('text'),
+												elm$html$Html$Attributes$step('0.01'),
+												elm$html$Html$Events$onInput(author$project$Custom$WebGL$ChangeAmbientColourR),
+												elm$html$Html$Attributes$value(ambientColourText.x)
+											]),
+										_List_Nil),
+										elm$html$Html$text(' G: '),
+										A2(
+										elm$html$Html$input,
+										_List_fromArray(
+											[
+												elm$html$Html$Attributes$type_('text'),
+												elm$html$Html$Attributes$step('0.01'),
+												elm$html$Html$Events$onInput(author$project$Custom$WebGL$ChangeAmbientColourG),
+												elm$html$Html$Attributes$value(ambientColourText.y)
+											]),
+										_List_Nil),
+										elm$html$Html$text(' B: '),
+										A2(
+										elm$html$Html$input,
+										_List_fromArray(
+											[
+												elm$html$Html$Attributes$type_('text'),
+												elm$html$Html$Attributes$step('0.01'),
+												elm$html$Html$Events$onInput(author$project$Custom$WebGL$ChangeAmbientColourB),
+												elm$html$Html$Attributes$value(ambientColourText.z)
+											]),
+										_List_Nil)
+									]))
+							])),
+						elm$html$Html$text(author$project$Custom$WebGL$message)
+					]))
+			]));
+};
 var elm$virtual_dom$VirtualDom$map = _VirtualDom_map;
 var elm$html$Html$map = elm$virtual_dom$VirtualDom$map;
 var author$project$Custom$view = function (model) {
-	if (model.$ === 'LackModel') {
-		var submodel = model.a;
-		return A2(
-			elm$html$Html$map,
-			author$project$Custom$LackMsg,
-			author$project$Custom$Lack$view(submodel));
-	} else {
-		var submodel = model.a;
-		return A2(
-			elm$html$Html$map,
-			author$project$Custom$MapboxMsg,
-			author$project$Custom$Mapbox$view(submodel));
+	switch (model.$) {
+		case 'LackModel':
+			var submodel = model.a;
+			return A2(
+				elm$html$Html$map,
+				author$project$Custom$LackMsg,
+				author$project$Custom$Lack$view(submodel));
+		case 'MapboxModel':
+			var submodel = model.a;
+			return A2(
+				elm$html$Html$map,
+				author$project$Custom$MapboxMsg,
+				author$project$Custom$Mapbox$view(submodel));
+		default:
+			var submodel = model.a;
+			return A2(
+				elm$html$Html$map,
+				author$project$Custom$WebGLMsg,
+				author$project$Custom$WebGL$view(submodel));
 	}
 };
 var author$project$Formatting$slidePadding = '25px 100px';
@@ -12004,13 +12768,6 @@ var author$project$Formatting$text_ = function (txt) {
 var elm$html$Html$br = _VirtualDom_node('br');
 var elm$html$Html$h1 = _VirtualDom_node('h1');
 var elm$html$Html$img = _VirtualDom_node('img');
-var elm$html$Html$Attributes$stringProperty = F2(
-	function (key, string) {
-		return A2(
-			_VirtualDom_property,
-			key,
-			elm$json$Json$Encode$string(string));
-	});
 var elm$html$Html$Attributes$src = function (url) {
 	return A2(
 		elm$html$Html$Attributes$stringProperty,
@@ -12499,7 +13256,6 @@ var author$project$Main$notice = _List_fromArray(
 					]))
 			]))
 	]);
-var elm_explorations$linear_algebra$Math$Matrix4$makeLookAt = _MJS_m4x4makeLookAt;
 var author$project$Common$Camera$camera = function (_n0) {
 	var from = _n0.from;
 	var to = _n0.to;
@@ -12516,7 +13272,6 @@ var author$project$Common$Camera$camera = function (_n0) {
 		width: 1
 	};
 };
-var elm_explorations$linear_algebra$Math$Matrix4$makePerspective = _MJS_m4x4makePerspective;
 var author$project$Common$Camera$resize = F3(
 	function (width, height, camera_) {
 		return _Utils_update(
@@ -12857,7 +13612,6 @@ var w0rm$elm_physics$Physics$Body$moveBy = F2(
 						position: A2(w0rm$elm_physics$Internal$Vector3$add, offset, body.position)
 					})));
 	});
-var elm$core$Basics$sin = _Basics_sin;
 var w0rm$elm_physics$Internal$Quaternion$fromAngleAxis = F2(
 	function (angle, axis) {
 		var theta = angle / 2.0;
@@ -13222,6 +13976,33 @@ var author$project$Main$weAreNeverEverGettingBackTogether = _List_fromArray(
 						])))
 			]))
 	]);
+var author$project$Custom$WebGL$MouseStatus = F3(
+	function (pressed, x, y) {
+		return {pressed: pressed, x: x, y: y};
+	});
+var author$project$Custom$WebGL$initial = function (_n0) {
+	var width = _n0.width;
+	var height = _n0.height;
+	return {
+		ambientColour: A3(elm_explorations$linear_algebra$Math$Vector3$vec3, 0.2, 0.2, 0.2),
+		ambientColourText: {x: '0.2', y: '0.2', z: '0.2'},
+		directional: A3(elm_explorations$linear_algebra$Math$Vector3$vec3, 1, 1, 1),
+		directionalColour: A3(elm_explorations$linear_algebra$Math$Vector3$vec3, 1, 1, 1),
+		directionalColourText: {x: '1', y: '1', z: '1'},
+		directionalText: {x: '1', y: '1', z: '1'},
+		lighting: true,
+		mouseStatus: A3(author$project$Custom$WebGL$MouseStatus, false, 0, 0),
+		position: A3(elm_explorations$linear_algebra$Math$Vector3$vec3, 0, 0, -4),
+		texture: elm$core$Maybe$Nothing,
+		thetaX: 0,
+		thetaY: 0
+	};
+};
+var author$project$Custom$webgl = function (options) {
+	return w0rm$elm_slice_show$SliceShow$Content$custom(
+		author$project$Custom$WebGLModel(
+			author$project$Custom$WebGL$initial(options)));
+};
 var author$project$Main$webGL = _List_fromArray(
 	[
 		A3(
@@ -13230,14 +14011,30 @@ var author$project$Main$webGL = _List_fromArray(
 		'hsl(40, 60%, 45%)',
 		_List_fromArray(
 			[
-				author$project$Formatting$title('elm-explorations/webgl'),
-				author$project$Formatting$bullets(
-				_List_fromArray(
-					[
-						author$project$Formatting$bullet('Three.js とは異なり、WebGL を直接操作する'),
-						author$project$Formatting$bullet('Elmでここだけの [glsl | ... |] という記法がある'),
-						author$project$Formatting$bullet('GLSLの知識が少し必要です')
-					]))
+				A3(
+				author$project$Formatting$position,
+				0,
+				0,
+				author$project$Custom$webgl(
+					{height: 720, width: 1280})),
+				author$project$Formatting$noPointerEvents(
+				A5(
+					author$project$Formatting$group,
+					100,
+					25,
+					1100,
+					280,
+					_List_fromArray(
+						[
+							author$project$Formatting$title('elm-explorations/webgl'),
+							author$project$Formatting$bullets(
+							_List_fromArray(
+								[
+									author$project$Formatting$bullet('Three.js とは異なり、WebGL を直接操作する'),
+									author$project$Formatting$bullet('Elmでここだけの [glsl | ... |] という記法がある'),
+									author$project$Formatting$bullet('GLSLの知識が少し必要です')
+								]))
+						])))
 			]))
 	]);
 var author$project$Main$slides = _List_fromArray(
@@ -13297,7 +14094,6 @@ var w0rm$elm_slice_show$SliceShow$setView = F2(
 				{view: view}));
 	});
 var elm$browser$Browser$application = _Browser_application;
-var elm$browser$Browser$Events$Document = {$: 'Document'};
 var elm$browser$Browser$Events$onKeyDown = A2(elm$browser$Browser$Events$on, elm$browser$Browser$Events$Document, 'keydown');
 var elm$html$Html$Events$keyCode = A2(elm$json$Json$Decode$field, 'keyCode', elm$json$Json$Decode$int);
 var elm$url$Url$addPort = F2(
