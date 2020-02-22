@@ -1,7 +1,7 @@
 {
   "scripts": {
     "clean": "rimraf assets/elm.js",
-    "compile": "elm make Main.elm --optimize --output=assets/elm.optimized.js",
+    "compile": "elm make src/Main.elm --optimize --output=assets/elm.optimized.js",
     "minify": "google-closure-compiler --js=assets/elm.optimized.js --js_output_file=assets/elm.js && rm assets/elm.optimized.js",
     "build": "npm-run-all -s clean compile minify",
     "start": "elm reactor"
