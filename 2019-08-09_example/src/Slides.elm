@@ -1,4 +1,4 @@
-module Slides exposing (Message, Model, slides, subscriptions, update, view)
+module Slides exposing (Message, Model, bulletLink, slides, subscriptions, update, view)
 
 import Browser.Events exposing (onAnimationFrameDelta)
 import Html exposing (Html, a, div, h1, img, li, p, small, text, ul)

@@ -1,7 +1,7 @@
 module Main exposing (main)
 
 import Custom exposing (Content, Msg)
-import Formatting exposing (background, bullet, bulletLink, bullets, code, color, colored, group, noPointerEvents, padded, position, spacer, text_, title)
+import Formatting exposing (background, bullet, bulletLink, bullets, code, colored, group, noPointerEvents, position, spacer, text_, title)
 import Html exposing (a, br, h1, img, li, span, text, ul)
 import Html.Attributes exposing (href, src, style, target)
 import SliceShow exposing (Message, Model, init, setSubscriptions, setUpdate, setView, show)
@@ -20,6 +20,7 @@ main =
         |> show
 
 
+slides : List (List Content)
 slides =
     [ notice
     , cover

@@ -20,6 +20,7 @@ main =
         |> show
 
 
+slides : List (List Content)
 slides =
     [ cover
     , jsLibraries

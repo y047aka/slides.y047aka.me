@@ -17,7 +17,7 @@ type Msg
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model =
+subscriptions _ =
     Sub.none
 
 
@@ -29,5 +29,5 @@ update action model =
 
 
 view : Model -> Html Msg
-view model =
+view _ =
     Html.div [] []
